@@ -20,12 +20,39 @@
         //print_r($frutas)
 
         //echo $frutas["clave 4"];
-/*
+
         $frutas = [
             "Manzana",
             "Naranja",
             "Cereza"   
         ];
+
+        echo "<h3>Mis frutas con For</h3>";
+        echo "<ol>";
+        for($i = 0; $i < count($frutas); $i++){
+            echo "<li>" . $frutas[$i] . "</li>";
+        }
+        echo "</ol>";
+        echo "===============";
+
+        echo "<h3>Mis frutas con while</h3>";
+        echo "<ol>";
+        $i = 0;
+        while ($i < count($frutas)){
+            echo "<li>" . $frutas[$i] . "</li>";
+            $i++;
+        }
+        echo "</ol>";
+        echo "===============";
+
+        echo "<h3>Mis frutas con FOREACH</h3>";
+        echo "<ol>";
+        foreach($frutas as $fruta) {
+            echo "<li>" . $fruta . "</li>";
+        }
+        echo "</ol>";
+        echo "===============";
+        /*
         //Agregamos en el array
         array_push($frutas, "Mango","Melocoton");
         $frutas[7] = "Uva";
@@ -33,7 +60,7 @@
         $frutas[] = "Melon";
         echo "<br>";
         //echo $frutas[1];
-        //FUncion para inxear (ordenar las pos)
+        //FUncion para ordenar las pos)
         $frutas = array_values($frutas);
 
         //Para borrar y cargarse algo del array
@@ -72,6 +99,10 @@
         /*print_r($personas);
         echo "<br>";
         print_r($personas["87654321L"]);*/
+
+        $tamaño = count($personas);
+        echo "<h3>$tamaño</h3>";
+
     ?>
 </body>
 </html>
