@@ -357,22 +357,54 @@
             echo "<td>$nombre</td>";
             echo "<td>$notas</td>";
             $colores = match (true) {
-                $notas < 5 => "<td style = 'background-color: red'>Suspenso</td>",
-                $notas < 7 =>  "<td style = 'background-color: green';>Aprobado</td>",
-                $notas < 9 => "<td style = 'background-color: green';>Notable</td>",
-                $notas <= 10 => "<td style = 'background-color: green';>Sobresaliente</td>",
+                ($notas <= 5) => "<td style = 'background-color: red'>Suspenso</td>",
+                ($notas <= 7) =>  "<td style = 'background-color: green';>Aprobado</td>",
+                ($notas <= 9) => "<td style = 'background-color: orange';>Notable</td>",
+                ($notas <= 10) => "<td style = 'background-color: green';>Sobresaliente</td>",
             };
             echo $colores;
             /*if($notas > 5) echo "<td style = 'background-color: green';>Aprobado</td>";
             else echo "<td style = 'background-color: red'>Suspenso</td>";*/
             echo "</tr>";
-        }
-
-        
-
+        }        
         ?>
-
-        
+        </tbody>
+    </table>
+    <h2>MOSTRAR UNA TABLA LOS NOMBRES Y VER SI ESTAS SUSPENSO O APROBADO (VERSION 2)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Notas</th>
+                <th>Calificacion </th>
+            </tr>
+        </thead>
+        <tbody>
+        <?php
+            $estudiantes = [
+                "GUILLERMO" => 3,  //SUSPENSO
+                "ESTELA" =>  10,   //APROBADA
+                "SOFIA"   => 10,  //APROBADA
+                "ENYA"    => 8,   //APROBADA
+                "EMILIO"  => 10,  //APROBADA
+                "CAPITAN" => 9,//   APROBADO
+                "ALEJANDRA" => 1, // SUSPENSO
+                "JAIME" =>  2,  //  SUSPENSO
+                "DANI" => 10,    //APROBADO
+                "MEDINILLA" => 8,  //APROBADO
+                "JORGE" => 1,   //   SUSPENSO
+            ];
+            foreach($estudiantes as $estudiante => $nota){?>
+                <?php if($nota < 5) echo "<tr class='suspenso'>"?>
+                <?php if($nota >= 5) echo "<tr class='aprobado'>"?>
+                    <?php echo "<td>$estudiante</td>" ?>
+                    <?php echo "<td>$nota</td>" ?>
+                    <?php
+                    if($nota < 5){ echo "<td>Suspenso</td>"?>
+                    <?php } else{ echo "<td>Aprobado</td>" ?>
+                    <?php }?>
+                </tr>
+        <?php  }?>
         </tbody>
     </table>
 </body>
