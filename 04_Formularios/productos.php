@@ -56,29 +56,29 @@
         </tbody>
     </table>
 
+    <br>
     <form action="" method="post">
         <label for="nombre">Nombre</label>
-        <input type="text" name="name" id="nombre" placeholder="Introduce el nombre del producto"><br>
+        <input type="text" name="name" id="nombre" placeholder="Nombre del producto">
         <input type="submit" value="Verificar">
     </form>
 
     <?php
         if($_SERVER["REQUEST_METHOD"] == "POST"){
             $nombre_producto = $_POST['name'];
-            $encontrado = false;
 
-            foreach($productos as $producto){
-                list($name, $precio, $stock) = $producto;
-                if($name == $nombre_producto && $precio != 0){
+            $encontrado = false;
+            $i = 0;
+            while($i < count($productos) && (!$encontrado)){
+                if($productos[$i][0] == $nombre_producto && $productos[$i][2] > 0){
+                    echo "DISPONIBLE";
                     $encontrado = true;
                 }
+                $i++;
             }
-            if (!$encontrado) {
-                echo "Disponible y su precio es $precio";
-            }else{
-                echo "NO DISPONIBLE";
-            }
-            
+            if(!$encontrado) echo "NO DISPONIBLE";
+
+            /*DECIRLE A ALEJANDRA QUE DENTRO DE MI CODIGO ME PILLA EL (POSIBLE)= SIGUIENTE DISPONIBLE O NO*/
         }
     ?>
 </body>
