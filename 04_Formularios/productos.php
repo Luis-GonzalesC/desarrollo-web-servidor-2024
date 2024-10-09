@@ -73,7 +73,7 @@
                     $encontrado = true;
                 }
             }
-            if ($encontrado) {
+            if (!$encontrado) {
                 echo "Disponible y su precio es $precio";
             }else{
                 echo "NO DISPONIBLE";
