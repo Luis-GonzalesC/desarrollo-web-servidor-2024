@@ -15,17 +15,40 @@
     -->
 
     <?php
-        $array = [];
-        for ($i=0; $i < 10; $i++) { 
-            array_push($array, rand(1,50));
+        $array = [1,5,3,9,20,15,22,11];
+
+        for ($i=0; $i < count($array); $i++) { 
+            echo "$array[$i] ";
         }
+    ?>
+    <form action="" method="post">
+        <label for="maximo">Máximo</label>
+        <input type="text" name="valor_min" id="maximo" placeholder="Introduce el máximo"><br>
+        <input type="submit" value="Comprobar">
+    </form>
 
-        foreach($array as $value){
-            echo $value;
-            echo "<br>";
+    
+    <?php
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            $valormin = $_POST['valor_min'];
+            //$valormax = max($array);
+            $candidato = $array[0];
+            for ($i=1; $i < count($array); $i++) { 
+                if($array[$i] > $candidato){
+                    $candidato = $array[$i];
+                }
+            }
+            $valormax = $candidato;
+
+            if($valormin == $valormax){
+                echo "<h1>ACERTASTE</h1>";
+            }else {
+                echo "<h1>NO ACERTASTE</h1>";
+            }
+
+
+            echo "Tu valor fue $valormin y el más alto es $valormax";
         }
-
-
     ?>
 </body>
 </html>
