@@ -17,6 +17,7 @@
         HACER LA LOGICA CON LA ESTRUCTURA MATCH
     -->
     <form action="" method="post">
+        <label
         <input type="text" name="nombre"> <br>
         <input type="text" name="edad"> <br>
         <input type = "submit" value = "Enviar">
