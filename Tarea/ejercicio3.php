@@ -25,9 +25,10 @@
 
             for ($i=$num1; $i <= $num2; $i++) { 
                 $esPrimo = TRUE;
+                if($i <= 1) $esPrimo = FALSE;
                 $j = 2;
                 while($j < $i){
-                    if($i % $j == 0) {
+                    if(($i % $j == 0) && ($i != 1)) {
                         $esPrimo = FALSE;
                         $j = $i;
                     }
