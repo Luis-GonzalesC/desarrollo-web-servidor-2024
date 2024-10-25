@@ -1,0 +1,12 @@
+
+td, th {
+    border: 2px solid rgb(134, 8, 8);
+}
+
+.suspenso{
+    background-color: red;
+}
+
+.aprobado{
+    background-color: green;
+}
