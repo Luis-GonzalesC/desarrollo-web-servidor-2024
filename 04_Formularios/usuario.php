@@ -98,7 +98,7 @@
                     if($edad <= 120){
                         $fecha_nacimiento = $tmp_fecha_nacimiento;
                         echo "Edad válida";
-                    }else if($edad >121){
+                    }else if($edad >= 121){
                         echo "EDAD NO VALIDA ES MAYOR QUE 121";
                     }else{
                         if ($_mes < $mes_actual){
