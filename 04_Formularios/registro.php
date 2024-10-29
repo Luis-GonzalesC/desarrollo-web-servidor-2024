@@ -31,7 +31,8 @@
                 else{
                     $verificar = ["T","R","W","A","G","M","Y","F","P","D","X","B","N","J","Z","S","Q","V","H","L","C","K","E"];
                     $comprobar_letra = substr($tmp_dni, 0, 8);
-                    $ultima_letra = substr($tmp_dni, 8, 9);
+                    $ultima_letra = substr($tmp_dni, 8);
+                    //$ultima_letra = substr($tmp_dni, 8, 1);
                     $calculo_digito = (int)$comprobar_letra % 23;
 
                     if($verificar[$calculo_digito] == $ultima_letra) $dni = $tmp_dni;
