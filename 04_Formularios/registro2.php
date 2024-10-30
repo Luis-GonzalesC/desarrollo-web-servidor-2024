@@ -11,9 +11,25 @@
 </head>
 <body>
     <?php
+        /**
+         * Titulo: entre 1 y 60 caracteres letras o números
+         * Consola (radio button): PC, Nintendo Switch, PS4, PS5, XBOX Series, XBOX Series S
+         * Descripcion(text area): opcional, y máximo 255 caracteres, solo admite letras o números, y comas y puntos
+         * Fecha de lanzamiento: entre el 1 de enero de 1947 y dentro de 10 años (dinámico)
+        */
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
+            $tmp_titulo = $_POST["titulo"];
             //$tmp_consola = $_POST["consola"];
+            $tmp_descripcion = $_POST["descripcion"];
             $tmp_fecha_lanzamiento = $_POST["fecha_lanzamiento"];
+
+            if($tmp_titulo != ''){
+                $patron = "/^[a-zA-Z0-9]{1,60}$/";
+                if(!preg_match($patron, $tmp_titulo)) $err_titulo = "El título no cumple el patron";
+                else{
+                    $titulo = $tmp_titulo;
+                }
+            }else $err_titulo = "El título es obligatorio";
 
             /*$consola_valida = ["pc", "nintendo_switch", "ps4", "ps5", "xbox_x", "xbox_s"];
             if(!in_array($tmp_consola, $consola_valida)){
@@ -21,6 +37,13 @@
             }else{
                 $consola = $tmp_consola;
             }*/
+
+            if ($tmp_descripcion != '') {
+                $patron = "/^[a-zA-Z0-9\.,]{255}$/";
+                if(!preg_match($patron, $tmp_descripcion)) $err_descripcion = "La descripción no cumple el patron";
+                else $tmp_descripcion = $tmp_descripcion;
+            }
+
             if($tmp_fecha_lanzamiento != ''){
                 $patron = "/^[0-9]{4}\-[0-9]{2}\-[0-9]{2}$/";
                 if(!preg_match($patron, $tmp_fecha_lanzamiento)){
@@ -58,6 +81,9 @@
         }
     ?>
     <form action="" method="post">
+        <input type="text" name="titulo" placeholder="Ingrese un título">
+        <?php if(isset($err_titulo)) echo "<span class='error'>$err_titulo</span>"?>
+        <br>
         <input type="radio" id="pc" name="consola" value="pc">
         <label for="pc">PC</label>
         <br>
@@ -76,6 +102,8 @@
         <input type="radio" id="xbox_s" name="consola" value="xbox_s">
         <label for="xbox_s">XBOX Series S</label>
         <br>
+        <textarea name="descripcion" id="descripcion" placeholder="Descripcion" rows="4" cols="50"></textarea>
+        <?php if(isset($err_descripcion)) echo "<span class='error'>$err_descripcion</span>"?>
         <input type="date" name="fecha_lanzamiento" placeholder="Fecha de nacimiento">
         <?php if(isset($err_fecha_lanzamiento)) echo "<span class='error'>$err_fecha_lanzamiento</span>"?>
         <input type="submit" value="Enviar">
