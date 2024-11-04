@@ -8,6 +8,11 @@
         error_reporting( E_ALL );
         ini_set( "display_errors", 1 );
     ?>
+    <style>
+        .error{
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <?php
@@ -19,7 +24,6 @@
         */
         if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $tmp_titulo = $_POST["titulo"];
-            //$tmp_consola = $_POST["consola"];
             $tmp_descripcion = $_POST["descripcion"];
             $tmp_fecha_lanzamiento = $_POST["fecha_lanzamiento"];
 
@@ -31,15 +35,23 @@
                 }
             }else $err_titulo = "El título es obligatorio";
 
-            /*$consola_valida = ["pc", "nintendo_switch", "ps4", "ps5", "xbox_x", "xbox_s"];
-            if(!in_array($tmp_consola, $consola_valida)){
-                $err_consola = "Elegir una consola es obligatorio";
-            }else{
-                $consola = $tmp_consola;
-            }*/
+            //Verifico si en los radio button tiene algo, si es así lo guardo, caso contrario lo inicializo a vacio
+            if(isset($_POST["consola"])){//verifica para los radio button si está seleccionado o no (ESTO OBLIGATORIO SI NO PETA FUERTE)
+                $tmp_consola = $_POST["consola"];
+                $consola_valida = ["pc", "nintendo_switch", "ps4", "ps5", "xbox_x", "xbox_s"];
+                if(!in_array($tmp_consola, $consola_valida)){
+                    $err_consola = "Consola seleccionada no válida";
+                }else{
+                    $consola = $tmp_consola;
+                }
+            }
+            else $err_consola = "Este campo es obligatorio, no puede estar vacio";
+
+            
+            
 
             if ($tmp_descripcion != '') {
-                $patron = "/^[a-zA-Z0-9\.,]{255}$/";
+                $patron = "/^[a-zA-Z0-9\.,]{0,255}$/";//sin saltos de linea
                 if(!preg_match($patron, $tmp_descripcion)) $err_descripcion = "La descripción no cumple el patron";
                 else $tmp_descripcion = $tmp_descripcion;
             }
@@ -72,7 +84,6 @@
                             }
                         }
                     }
-
                 }
             }else{
                 $err_fecha_lanzamiento = "La fecha de lanzamiento es obligatoria";
@@ -101,11 +112,14 @@
         <br>
         <input type="radio" id="xbox_s" name="consola" value="xbox_s">
         <label for="xbox_s">XBOX Series S</label>
+        <?php if(isset($err_consola)) echo "<span class='error'>$err_consola</span>"?>
         <br>
         <textarea name="descripcion" id="descripcion" placeholder="Descripcion" rows="4" cols="50"></textarea>
         <?php if(isset($err_descripcion)) echo "<span class='error'>$err_descripcion</span>"?>
+        <br>
         <input type="date" name="fecha_lanzamiento" placeholder="Fecha de nacimiento">
         <?php if(isset($err_fecha_lanzamiento)) echo "<span class='error'>$err_fecha_lanzamiento</span>"?>
+        <br>
         <input type="submit" value="Enviar">
     </form>
 </body>
