@@ -36,7 +36,7 @@
                 if($tpm_precio == ""){
                     $err_precio = "EL precio es obligatorio";
                 }else{
-                    if(filter_var($tpm_precio, FILTER_VALIDATE_FLOAT) === FALSE){
+                    /*if(filter_var($tpm_precio, FILTER_VALIDATE_FLOAT) === FALSE){
                         $err_precio = "El precio debe ser un número";
                     }else{
                         if($tpm_precio < 0){
@@ -44,7 +44,8 @@
                         }else{
                             $precio = $tpm_precio;
                         }
-                    }
+                    }*/
+                    $precio = $tpm_precio;
                 }
             }
 
