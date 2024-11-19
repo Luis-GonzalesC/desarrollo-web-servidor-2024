@@ -24,6 +24,8 @@
             //Esto ejecuta la conexión con la consulta que le pasamos
             $resultado = $_conexion -> query($sql); // => Devuelve un objeto
         ?>
+        <a href="nuevo_anime.php">Nuevo anime</a>
+        <a href="nuevo_estudio.php">Nuevo estudio</a>
 
         <table class = "table table-striped">
             <thead class = "table-primary">
@@ -32,6 +34,7 @@
                     <th>Estudio</th>
                     <th>Año</th>
                     <th>Número de temporadas</th>
+                    <th>Imagen</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,6 +47,11 @@
                         echo "<td>". $fila["nombre_estudio"] ."</td>";
                         echo "<td>". $fila["anno_estreno"] ."</td>";
                         echo "<td>". $fila["num_temporadas"] ."</td>";
+                        ?>
+                        <td>
+                            <img src="<?php echo $fila["imagen"] ?>">
+                        </td>
+                        <?php
                         echo "</tr>";
                     }
                 ?>

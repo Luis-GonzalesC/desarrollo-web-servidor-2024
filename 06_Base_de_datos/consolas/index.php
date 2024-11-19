@@ -14,6 +14,9 @@
 </head>
 <body>
 <div class="container">
+        <a href="nuevo_consola.php">Nuevas consolas</a>
+        <a href="nuevo_fabricante.php">Nuevo fabricante</a>
+
         <?php
             /**
              * Mostrar en una tabla la consulta sobre la conexión de BBDD
