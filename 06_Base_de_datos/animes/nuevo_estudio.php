@@ -47,6 +47,7 @@
 
             <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Crear">
+                <a class="btn btn-secondary" href="index.php">Regresar</a>
             </div>
         </form>
     </div>
