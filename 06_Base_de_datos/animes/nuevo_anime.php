@@ -31,6 +31,7 @@
                 $anno_estreno = $_POST["anno_estreno"];
                 $num_temporadas = $_POST["num_temporadas"];
 
+                //PARA PODER AGREGAR UNA IMAGEN
                 // $_FILES, QUE ES UN ARRAY DOBLE !!!!!!
                 $nombre_imagen = $_FILES["imagen"]["name"];
                 var_dump($_FILES["imagen"]);
