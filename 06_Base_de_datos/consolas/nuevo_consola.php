@@ -15,6 +15,15 @@
 <body>
     <div class="container">
         <?php
+            $sql = "SELECT * FROM fabricantes ORDER BY fabricante";
+            $resultado = $_conexion -> query($sql);
+
+            $fabricante = [];
+
+            while($fila = $resultado -> fetch_assoc()){
+                array_push($fabricante, $fila["fabricante"]);    
+            }
+
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 
                 $nombre = $_POST["nombre"];
@@ -22,16 +31,23 @@
                 $generacion = $_POST["generacion"];
                 $unidades_vendidas = $_POST["unidades_vendidas"];
 
+                //PARA PODER AGREGAR UNA IMAGEN
+                // $_FILES, QUE ES UN ARRAY DOBLE !!!!!!
+                $nombre_imagen = $_FILES["imagen"]["name"];
+                //var_dump($_FILES["imagen"]);
+                $direccion_temporal = $_FILES["imagen"]["tmp_name"]; //se guarda la ruta temporalmente
+                move_uploaded_file($direccion_temporal, "imagenes/$nombre_imagen"); // => FUNCION QUE MUEVE LA IMAGEN DE LA RUTA A NUESTRA IMAGEN
+
                 $sql = "INSERT INTO consolas
-                    (nombre, fabricante, generacion, unidades_vendidas) 
+                    (nombre, fabricante, generacion, unidades_vendidas, imagen) 
                     VALUES 
-                    ('$nombre', '$fabricante', $generacion, $unidades_vendidas)";
+                    ('$nombre', '$fabricante', $generacion, $unidades_vendidas, './imagenes/$nombre_imagen')";
 
                 $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
 
             }
         ?>
-        <form class="col-4" action="" method="post">
+        <form class="col-4" action="" method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <label class="form-label">Nombre de Consola</label>
                 <input class="form-control" type="text" name="nombre">
@@ -39,7 +55,15 @@
             
             <div class="mb-3">
                 <label class="form-label">Fabricante</label>
-                <input class="form-control" type="text" name="fabricante">
+                <select class="form-select" name="nombre_fabricante">
+                    <option value="" selected disabled hidden>---ELIGE UN FABRICANTE---</option>
+                    <?php
+                        foreach ($fabricante as $fabri) { ?>
+                            <option value="<?php echo $fabri ?>">
+                                <?php echo $fabri ?>
+                            </option>
+                    <?php } ?>
+                </select>
             </div>
 
             <div class="mb-3">
@@ -53,7 +77,13 @@
             </div>
 
             <div class="mb-3">
+                <label class="form-label">Imagen</label>
+                <input class="form-control" type="file" name="imagen">
+            </div>
+
+            <div class="mb-3">
                 <input class="btn btn-primary" type="submit" value="Crear">
+                <a class="btn btn-secondary" href="index.php">Regresar</a>
             </div>
         </form>
     </div>

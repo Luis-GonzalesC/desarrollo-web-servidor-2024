@@ -25,12 +25,21 @@
 <body>
     <div class="container">
         <?php
+            if($_SERVER["REQUEST_METHOD"] == "POST"){
+                $id_anime = $_POST["id_anime"];
+                //echo "<h1>$id_anime</h1>";
+                $sql = "DELETE FROM animes WHERE id_anime = '$id_anime'";
+                $_conexion -> query($sql);
+            }
+
             $sql = "SELECT * FROM animes";//Escribimos la consulta
             //Esto ejecuta la conexión con la consulta que le pasamos
             $resultado = $_conexion -> query($sql); // => Devuelve un objeto
         ?>
-        <a class="btn btn-primary" href="nuevo_anime.php">Nuevo anime</a> <br><br>
+        <br>
+        <a class="btn btn-primary" href="nuevo_anime.php">Nuevo anime</a>
         <a class="btn btn-primary" href="nuevo_estudio.php">Nuevo estudio</a>
+        <br><br>
 
         <table class = "table table-striped">
             <thead class = "table-primary">
@@ -40,6 +49,8 @@
                     <th>Año</th>
                     <th>Número de temporadas</th>
                     <th>Imagen</th>
+                    <th>Borrar Imagen</th>
+                    <th>Editar anime</th>
                 </tr>
             </thead>
             <tbody>
@@ -55,6 +66,16 @@
                         ?>
                         <td>
                             <img src="<?php echo $fila["imagen"] ?>" class="imagen">
+                        </td>
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" name="id_anime" value="<?php echo $fila["id_anime"] ?>">
+                                <input class="btn btn-danger" type="submit" value="Borrar">
+                            </form>
+                        </td>
+                        <td>
+                            <a class="btn btn-primary" 
+                            href="editar_anime.php?id_anime=<?php echo $fila["id_anime"] ?>">EDITAR</a>
                         </td>
                         <?php
                         echo "</tr>";

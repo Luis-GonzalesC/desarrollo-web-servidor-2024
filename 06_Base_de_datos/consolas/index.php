@@ -11,11 +11,33 @@
 
         require('conexion.php');//Importando la conexion php del servidor (BBDD)
     ?>
+    <style>
+        th{
+            background-color: #681DA8;
+        }
+
+        .imagen{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-        <a href="nuevo_consola.php">Nuevas consolas</a>
-        <a href="nuevo_fabricante.php">Nuevo fabricante</a>
+        <?php
+            if($_SERVER["REQUEST_METHOD"] == "POST"){
+                $id_consola = $_POST["id_consola"];
+                
+                $sql = "DELETE FROM consolas WHERE id_consola = '$id_consola'";
+
+                $_conexion -> query($sql);
+            }
+        ?>
+
+        <br>
+        <a class="btn btn-primary" href="nuevo_consola.php">Nuevas consolas</a>
+        <a class="btn btn-primary" href="nuevo_fabricante.php">Nuevo fabricante</a>
+        <br><br>
 
         <?php
             /**
@@ -31,11 +53,12 @@
         <table class = "table table-striped">
             <thead class = "table-primary">
                 <tr>
-                    <th>Id de las consolas</th>
                     <th>Nombre</th>
                     <th>Fabricante</th>
                     <th>Generación</th>
                     <th>Unidades vendidas</th>
+                    <th>Imagen</th>
+                    <th>Borrar Imagen</th>
                 </tr>
             </thead>
             <tbody>
@@ -44,7 +67,6 @@
                     while($fila = $resultado -> fetch_assoc()){//Esto se ejecutara mientras tenga filas
                         // EL OBJETO SERIA ALGO ASI => id_consola, nombre, fabricante, generacion,unidades_vendidas
                         echo "<tr>";
-                        echo "<td>". $fila["id_consola"] ."</td>";
                         echo "<td>". $fila["nombre"] ."</td>";
                         echo "<td>". $fila["fabricante"] ."</td>";
                         echo "<td>". $fila["generacion"] ."</td>";
@@ -53,9 +75,17 @@
                             echo "<td>No hay datos</td>";
                         }else{
                             echo "<td>". $fila["unidades_vendidas"] ."</td>";
-                        }
-                        
-                        echo "</tr>";
+                        }?>
+                        <td>
+                            <img src="<?php echo $fila["imagen"] ?>" class="imagen">
+                        </td>
+                        <td>
+                            <form action="" method="post">
+                                <input type="hidden" name="id_consola" value="<?php echo $fila["id_consola"] ?>">
+                                <input class="btn btn-danger" type="submit" value="Borrar">
+                            </form>
+                        </td>
+              <?php     echo "</tr>"; 
                     }
                 ?>
             </tbody>
