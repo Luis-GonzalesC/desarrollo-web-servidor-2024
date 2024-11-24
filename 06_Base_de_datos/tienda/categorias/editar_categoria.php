@@ -36,7 +36,7 @@
         <form class="col-4" action="" method="post">
         <div class="mb-3">
                 <label class="form-label">Categoria</label>
-                <input disabled class="form-control" type="text" name="categoria" value="<?php echo $cate["categoria"] ?>">
+                <input disabled class="form-control" type="text" value="<?php echo $cate["categoria"] ?>">
                 <input type="hidden" name="categoria" value="<?php echo $cate["categoria"] ?>">
         </div>
 

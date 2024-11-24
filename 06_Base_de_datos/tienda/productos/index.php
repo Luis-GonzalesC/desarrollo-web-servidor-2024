@@ -11,6 +11,12 @@
 
         require('../util/conexion.php');//Importando la conexion php del servidor (BBDD)
     ?>
+    <style>
+        .imagen{
+            width: 100px;
+            height: 100px;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
