@@ -143,4 +143,4 @@ CREATE TABLE usuarios(
     contrasena VARCHAR(255)
 );
 
-SELECT * FROM usuario;
+SELECT * FROM usuarios;
