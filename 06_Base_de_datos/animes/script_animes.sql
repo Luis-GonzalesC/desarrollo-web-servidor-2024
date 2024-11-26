@@ -135,3 +135,12 @@ SELECT * FROM animes;
 INSERT INTO animes VALUES(28, "Kimetsu no blabla", "Pierrot", 2020, 3);
 ROLLBACK;
 SELECT * FROM animes;
+
+-- Creación de una tabla donde entra nuestros registros
+
+CREATE TABLE usuarios(
+	usuario VARCHAR(15) PRIMARY KEY,
+    contrasena VARCHAR(255)
+);
+
+SELECT * FROM usuario;
