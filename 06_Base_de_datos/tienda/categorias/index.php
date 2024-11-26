@@ -29,6 +29,7 @@
         ?>
 
         <a class="btn btn-primary" href="nueva_categoria.php">Nueva Categoria</a>
+        <a class ="btn btn-secondary" href="../productos/index.php">Productos</a>
 
         <table class="table table-striped">
             <thead class="table-primary">

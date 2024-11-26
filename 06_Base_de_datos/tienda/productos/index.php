@@ -10,6 +10,14 @@
         ini_set( "display_errors", 1);
 
         require('../util/conexion.php');//Importando la conexion php del servidor (BBDD)
+
+        session_start(); //Para recuperar lo que sea iniciado porque no podemos acceder a ese valor
+        /*Comprobamos si un usuario se ha logueado en claso contrario
+        cortamos la ejecucion*/
+        if(!isset($_SESSION["usuario"])){
+            header("location: usuarios/iniciar_sesion.php");
+            exit;
+        }
     ?>
     <style>
         .imagen{
@@ -20,6 +28,9 @@
 </head>
 <body>
     <div class="container">
+        <h2>Bienvenid@ <?php echo $_SESSION["usuario"] ?></h2>
+        <a class ="btn btn-danger" href="usuarios/cerrar_sesion.php">Cerrar Sesión</a>
+        <h2>Listado de Productos</h2>
         <?php
             //Esto para borrar
             if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -35,7 +46,7 @@
         ?>
 
         <a class="btn btn-primary" href="nuevo_producto.php">Nuevo Producto</a>
-
+        <a class ="btn btn-secondary" href="../categorias/index.php">Categorias</a>
         <table class="table table-striped">
             <thead class="table-primary">
                 <tr>
