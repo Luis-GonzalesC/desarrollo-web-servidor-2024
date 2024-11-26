@@ -99,7 +99,7 @@
 
             /*Esto es el bloque de código para poder modificar el producto*/
             $id_producto = $_GET["id_producto"];
-            $sql = "SELECT * FROM productos WHERE id_producto = '$id_producto'";//El id de anime viene desde el otro lado
+            $sql = "SELECT * FROM productos WHERE id_producto = '$id_producto'";//El id de producto viene desde el otro lado
             $resultado = $_conexion -> query($sql);
             $producto = $resultado -> fetch_assoc();
         ?>
