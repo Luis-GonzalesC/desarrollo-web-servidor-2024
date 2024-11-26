@@ -18,17 +18,23 @@
             $usuario = $_POST["usuario"];
             $contrasena = $_POST["contrasena"];
             
-            $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";
+            $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";//Sacamos los usuarios de la base de datos
 
-            $resultado = $_conexion -> query($sql);
-            //var_dump($resultado);
+            $resultado = $_conexion -> query($sql);//cogemos la consulta
+            //var_dump($resultado); cogemos el campo num_rows para ver si hay algo o no
             if($resultado -> num_rows == 0){
                 echo "<h2>El usuario no existe</h2>";
             }else{
                 $info_usuario = $resultado -> fetch_assoc(); //Cogemos la fila en la cual accedemos por la columna de la tabla
                 $acceso_concedido = password_verify($contrasena, $info_usuario["contrasena"]);//metodo que verifica si la contraseña es correcta (true/false)
                 if(!$acceso_concedido) echo "<h2>Contraseña equivocada</h2>";
-                else echo "<h2>P' dentro</h2>";
+                else {
+                    //echo "<h2>P' dentro</h2>";
+                    session_start(); //Se crea una sesión
+                    $_SESSION["usuario"] = $usuario; //Usuario logueado es usuario
+                    header("location: ../index.php"); //Me redirige al index si se ha logueado
+                    exit; //para cortar el fichero y liberar memoria
+                }
             }
         }
     ?>

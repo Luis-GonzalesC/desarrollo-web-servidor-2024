@@ -9,6 +9,14 @@
         ini_set( "display_errors", 1);
 
         require('conexion.php');//Importando la conexion php del servidor (BBDD)
+
+        session_start(); //Para recuperar lo que sea iniciado porque no podemos acceder a ese valor
+        /*Comprobamos si un usuario se ha logueado en claso contrario
+        cortamos la ejecucion*/
+        if(!isset($_SESSION["usuario"])){
+            header("location: usuario/iniciar_sesion.php");
+            exit;
+        }
     ?>
     <title>Animes</title>
     <style>
@@ -24,6 +32,9 @@
 </head>
 <body>
     <div class="container">
+        <h2>Bienvenid@ <?php echo $_SESSION["usuario"] ?></h2>
+        <a class ="btn btn-danger" href="usuario/cerrar_sesion.php">Cerrar Sesión</a>
+        <h2>Listado de animes</h2>
         <?php
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $id_anime = $_POST["id_anime"];
