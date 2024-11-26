@@ -47,4 +47,10 @@ INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion)
 INSERT INTO productos (nombre, precio, categoria, stock, imagen, descripcion)
 	VALUES ('Elden Ring Shadow Of The Erdtree Edition ', 49.99, 'PS5', 40, '../imagenes/elden_ring.png', 'Descubre territorios inexplorados enfrentándote a adversarios formidables, donde el drama y la intriga se entrelazan');
 
+CREATE TABLE usuarios(
+	usuario VARCHAR(15) PRIMARY KEY,
+    contrasena VARCHAR(255)
+);
+
+SELECT * FROM usuarios;
 
