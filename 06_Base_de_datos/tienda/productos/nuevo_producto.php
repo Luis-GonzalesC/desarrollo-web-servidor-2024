@@ -38,13 +38,6 @@
             }
 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                /*$nombre_producto = $_POST["nombre"];
-                $precio_producto = $_POST["precio"];
-                $categoria = $_POST["categoria"];
-                $stock = $_POST["stock"];
-                //IMAGEN ABAJO
-                $descripcion = $_POST["descripcion"];*/
-
                 $tmp_nombre_producto = depurar($_POST["nombre"]);
                 $tmp_precio_producto = depurar($_POST["precio"]);
                 if(isset($_POST["categoria"])) $tmp_categoria = depurar($_POST["categoria"]);
@@ -54,38 +47,53 @@
 
                 //Validación del nombre
                 if($tmp_nombre_producto != ''){
-                    if(strlen($tmp_nombre_producto) > 50) $err_nombre_producto = "El nombre del producto no puedo ser mayor que 50 caracteres";
-                    else $nombre_producto = $tmp_nombre_producto;
+                    if(strlen($tmp_nombre_producto) >= 2 && strlen($tmp_nombre_producto) <= 50){
+                        $patron = "/^[a-zA-Z0-9 ]+$/";
+                        if(!preg_match($patron, $tmp_nombre_producto)) $err_nombre_producto = "El nombre del producto solo debe tener letras, espacios en blanco y números";
+                        else $nombre_producto = $tmp_nombre_producto;
+                    }else $err_nombre_producto = "El nombre del producto debe tener entre 2 y 50 caracteres";
                 } else $err_nombre_producto = "EL nombre del producto tiene que ser obligatorio";
 
                 //Validacion del precio
                 if($tmp_precio_producto != ''){
-                    if(filter_var($tmp_precio_producto, FILTER_VALIDATE_FLOAT) !== FALSE)
-                        $precio_producto = $tmp_precio_producto;
-                    else $err_precio_producto = "El precio del producto tiene que ser un número";
-                } else $err_precio_producto = "EL precio del producto es obligatorio";
+                    if(filter_var($tmp_precio_producto, FILTER_VALIDATE_FLOAT) !== FALSE){
+                        $valor_maximo_BBDD = 9999.99;
+                        if($tmp_precio_producto >= 0 && $tmp_precio_producto <= $valor_maximo_BBDD){
+                            $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})?$/";
+                            if(!preg_match($patron, $tmp_nombre_producto)) $err_precio_producto = "El precio del producto no cumple el patrón";
+                            else $precio_producto = $tmp_precio_producto;
+                        } else $err_precio_producto = "El precio del producto es debe ser estar entre 0 y ". $valor_maximo_BBDD . " como máximo";
+                    } else $err_precio_producto = "El precio del producto tiene que ser un número";
+                } else $err_precio_producto = "El precio del producto es obligatorio";
                 
+                //Validación de la descripción
+                if($tmp_descripcion != ''){
+                    if(strlen($tmp_descripcion) <= 255) $descripcion = $tmp_descripcion;
+                    else $err_descripcion = "La descripción tiene que tener 255 carácteres como máximo";
+                }else $err_descripcion = "La descripción es obligatoria";
+
+                if($tmp_stock != ''){
+                    if(filter_var($tmp_stock, FILTER_VALIDATE_INT) !== FALSE){
+                        if($tmp_stock >= 0 && $tmp_stock <= 999) $stock = $tmp_stock;
+                        else $err_stock = "El precio del producto tiene que ser un número entre 0 y 999";
+                    } else $err_stock = "El precio del producto tiene que ser un número ENTERO";
+                } else $stock = 0;
+
                 //Validacion de la categoria
                 if($tmp_categoria != ''){
                     if(in_array($tmp_categoria, $categorias)) $categoria = $tmp_categoria;
                     else $err_categoria = "La categoria seleccionada no es la correcta";
                 }else $err_categoria = "La categoria tiene que ser obligatorio";
                 
-                if($tmp_stock != ''){
-                    if(filter_var($tmp_stock, FILTER_VALIDATE_INT) !== FALSE) $stock = $tmp_stock;
-                    else $err_stock = "El precio del producto tiene que ser un número ENTERO";
-                } else $stock = 0;
-
-                //Falta validación de imagen
-                $nombre_imagen = $_FILES["imagen"]["name"];
-                $direccion_temporal = $_FILES["imagen"]["tmp_name"]; //se guarda la ruta temporalmente
-                move_uploaded_file($direccion_temporal, "../imagenes/$nombre_imagen"); // => FUNCION QUE MUEVE LA IMAGEN DE LA RUTA A NUESTRA IMAGEN
-
-                if($tmp_descripcion != ''){
-                    if(strlen($tmp_descripcion) > 255) $err_descripcion = "La descripción tiene que tener 255 carácteres";
-                    else $descripcion = $tmp_descripcion;
-                }else $err_descripcion = "La descripción es obligatoria";
-
+                
+                // Verificar si se subió una imagen (FALTA)
+                if(isset($_FILES["imagen"])) {
+                    $nombre_imagen = $_FILES["imagen"]["name"];
+                    $direccion_temporal = $_FILES["imagen"]["tmp_name"]; //se guarda la ruta temporalmente
+                    move_uploaded_file($direccion_temporal, "../imagenes/$nombre_imagen"); // => FUNCION QUE MUEVE LA IMAGEN DE LA RUTA A NUESTRA IMAGEN
+                } else $err_imagen = "Por favor, selecciona una imagen.";
+                
+                //SI TODO TA BIEN SE AGREGA
                 if(isset($nombre_producto) && isset($precio_producto) && isset($categoria) && isset($stock) && isset($descripcion)){
                     $sql = "INSERT INTO productos 
                     (nombre, precio, categoria, stock, imagen, descripcion) 
@@ -137,6 +145,7 @@
             <div class="mb-3">
                     <label class="form-label">Imagen</label>
                     <input class="form-control" type="file" name="imagen">
+                    <?php if(isset($err_imagen)) echo "<span class='error'>$err_imagen</span>"?>
                 </div>
 
             <div class="mb-3">
