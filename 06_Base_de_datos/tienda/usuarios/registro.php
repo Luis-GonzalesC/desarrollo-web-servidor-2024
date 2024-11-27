@@ -9,7 +9,7 @@
         error_reporting( E_ALL );
         ini_set( "display_errors", 1);
 
-        require('../../util/conexion.php');//Importando la conexion php del servidor (BBDD)
+        require('../util/conexion.php');//Importando la conexion php del servidor (BBDD)
     ?>
     <style>
         .error{

@@ -15,7 +15,7 @@
         /*Comprobamos si un usuario se ha logueado en claso contrario
         cortamos la ejecucion*/
         if(!isset($_SESSION["usuario"])){
-            header("location: usuarios/iniciar_sesion.php");
+            header("location: ../usuarios/iniciar_sesion.php");
             exit;
         }
     ?>
@@ -29,7 +29,7 @@
 <body>
     <div class="container">
         <h2>Bienvenid@ <?php echo $_SESSION["usuario"] ?></h2>
-        <a class ="btn btn-danger" href="usuarios/cerrar_sesion.php">Cerrar Sesión</a>
+        <a class ="btn btn-danger" href="../usuarios/cerrar_sesion.php">Cerrar Sesión</a>
         <h2>Listado de Productos</h2>
         <?php
             //Esto para borrar

@@ -9,7 +9,7 @@
         error_reporting( E_ALL );
         ini_set( "display_errors", 1);
 
-        require('../../util/conexion.php');//Importando la conexion php del servidor (BBDD)
+        require('../util/conexion.php');//Importando la conexion php del servidor (BBDD)
     ?>
 </head>
 <body>
@@ -32,7 +32,7 @@
                     //echo "<h2>P' dentro</h2>";
                     session_start(); //Se crea una sesión
                     $_SESSION["usuario"] = $usuario; //Usuario logueado es usuario
-                    header("location: ../index.php"); //Me redirige al index si se ha logueado
+                    header("location: ../productos/index.php"); //Me redirige al index si se ha logueado
                     exit; //para cortar el fichero y liberar memoria
                 }
             }
