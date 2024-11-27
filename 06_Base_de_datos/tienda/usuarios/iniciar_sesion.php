@@ -14,9 +14,16 @@
 </head>
 <body>
     <?php
+        function depurar(string $entrada) : string{
+            $salida = htmlspecialchars($entrada);
+            $salida = trim($salida);
+            $salida = preg_replace('/\$+/', ' ', $salida);
+            return $salida;
+        }
+    
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $usuario = $_POST["usuario"];
-            $contrasena = $_POST["contrasena"];
+            $usuario = depurar($_POST["usuario"]);
+            $contrasena = depurar($_POST["contrasena"]);
             
             $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";//Sacamos los usuarios de la base de datos
 
@@ -32,7 +39,7 @@
                     //echo "<h2>P' dentro</h2>";
                     session_start(); //Se crea una sesión
                     $_SESSION["usuario"] = $usuario; //Usuario logueado es usuario
-                    header("location: ../productos/index.php"); //Me redirige al index si se ha logueado
+                    header("location: ../index.php"); //Me redirige al index si se ha logueado
                     exit; //para cortar el fichero y liberar memoria
                 }
             }
@@ -57,6 +64,7 @@
         </form>
         <h3>O, si aún no tienes cuenta, regístrate</h3>
         <a class="btn btn-secondary" href="registro.php">Registrarse</a>
+        <a class="btn btn-secondary" href="../../tienda">Index de la tienda</a>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>

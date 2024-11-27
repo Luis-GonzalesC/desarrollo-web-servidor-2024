@@ -20,6 +20,13 @@
 <body>
     <div class="container">
         <?php
+            function depurar(string $entrada) : string{
+                $salida = htmlspecialchars($entrada);
+                $salida = trim($salida);
+                $salida = preg_replace('/\$+/', ' ', $salida);
+                return $salida;
+            }
+
             //De la tabla categorias saco todas las que existan
             $sql = "SELECT categoria FROM categorias ORDER BY categoria";
             $resultado = $_conexion -> query($sql);
@@ -38,12 +45,12 @@
                 //IMAGEN ABAJO
                 $descripcion = $_POST["descripcion"];*/
 
-                $tmp_nombre_producto = $_POST["nombre"];
-                $tmp_precio_producto = $_POST["precio"];
-                if(isset($_POST["categoria"])) $tmp_categoria = $_POST["categoria"];
+                $tmp_nombre_producto = depurar($_POST["nombre"]);
+                $tmp_precio_producto = depurar($_POST["precio"]);
+                if(isset($_POST["categoria"])) $tmp_categoria = depurar($_POST["categoria"]);
                 else $tmp_categoria = "";
-                $tmp_stock = $_POST["stock"];
-                $tmp_descripcion = $_POST["descripcion"];
+                $tmp_stock = depurar($_POST["stock"]);
+                $tmp_descripcion = depurar($_POST["descripcion"]);
 
                 //Validación del nombre
                 if($tmp_nombre_producto != ''){
@@ -83,7 +90,7 @@
                     $sql = "INSERT INTO productos 
                     (nombre, precio, categoria, stock, imagen, descripcion) 
                     VALUES 
-                    ('$nombre_producto', $precio_producto, '$categoria', $stock, '../imagenes/$nombre_imagen', '$descripcion')";
+                    ('$nombre_producto', $precio_producto, '$categoria', $stock, 'imagenes/$nombre_imagen', '$descripcion')";
 
                     $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
                 }else echo "<h1>NO SE HA INSERTADO NA</h1>";

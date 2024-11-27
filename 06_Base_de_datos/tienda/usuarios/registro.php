@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Registro para animes</title>
+    <title>Registro para usuarios</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <?php
         error_reporting( E_ALL );
@@ -19,26 +19,59 @@
 </head>
 <body>
     <?php
+        function depurar(string $entrada) : string{
+            $salida = htmlspecialchars($entrada);
+            $salida = trim($salida);
+            $salida = preg_replace('/\$+/', ' ', $salida);
+            return $salida;
+        }
+
         if($_SERVER["REQUEST_METHOD"] == "POST"){
-            $tmp_usuario = $_POST["usuario"];
-            $tmp_contrasena = $_POST["contrasena"];
+            $tmp_usuario = depurar($_POST["usuario"]);
+            $tmp_contrasena = depurar($_POST["contrasena"]);
 
             if($tmp_usuario != ''){
-                if(strlen($tmp_usuario) >= 15) $err_usuario = "El usuario no puede tener más de 15 carácteres";
-                else $usuario = $tmp_usuario;
-            }else $err_usuario = "El usuario es obligatorio";
+                if(strlen($tmp_usuario) >= 3 && strlen($tmp_usuario) <= 15){
+                    $patron = "/^[a-zA-Z0-9]+$/";
+                    if(!preg_match($patron, $tmp_usuario)) $err_usuario = "El nombre de usuario no cumple con el patrón, solo puede tener letras y números";
+                    else $usuario = $tmp_usuario;
+                }else $err_usuario = "El nombre de usuario debe tener entre 3 y 15 caracteres";
+            }else $err_usuario = "El nombre de usuario es obligatorio";
 
             if($tmp_contrasena != ''){
-                if(strlen($tmp_contrasena) >= 255) $err_contrasena = "La contraseña no puede tener más de 225 carácteres";
-                else $contrasena = $tmp_contrasena;
+                if(strlen($tmp_contrasena) >= 8 && strlen($tmp_contrasena) <= 15){
+                    $patron = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/";
+                    if(!preg_match($patron, $tmp_contrasena)) $err_contrasena = "La contraseña debe cumplir el patrón correspondiente";
+                    else $contrasena = $tmp_contrasena;
+                }else $err_contrasena = "La contraseña debe tener entre 8 y 15 carácteres";
             }else $err_contrasena = "La contraseña es obligatoria";
 
             if(isset($usuario) && isset($contrasena)){
-                $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
+                /*========= VERIFICACION DE USUARIO CON NOMBRE REPETIDO ===========*/
+                $sql = "SELECT usuario FROM usuarios"; //Selecciono todos los usuarios
+                $resultado = $_conexion -> query($sql);
+                
+                //Si no hay columnas es nulo quiere decir que no hay usuarios registrados
+                if($resultado -> num_rows == 0){
+                    $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
+                    $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+                    $_conexion -> query($sql);
+                }else{
+                    $array_usuarios = [];
+                    while($fila = $resultado -> fetch_assoc()){
+                        array_push($array_usuarios, $fila["usuario"]); //Cada usuario lo guardo en un array
+                    }
 
-                $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+                    //Verifico si el usuario tiene el mismo nombre que el ingresado o no
+                    if(!in_array($array_usuarios, $usuario)){
+                        $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
 
-                $_conexion -> query($sql);
+                        $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+
+                        $_conexion -> query($sql);
+                    }else echo "EL USUARIO YA EXISTE INGRESE OTRO NOMBRE";
+                }
+                
             }
             
         }

@@ -16,9 +16,16 @@
     <div class="container">
 
         <?php
+            function depurar(string $entrada) : string{
+                $salida = htmlspecialchars($entrada);
+                $salida = trim($salida);
+                $salida = preg_replace('/\$+/', ' ', $salida);
+                return $salida;
+            }
+
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $categoria = $_POST["categoria"];
-                $descripcion = $_POST["descripcion"];
+                $categoria = depurar($_POST["categoria"]);
+                $descripcion = depurar($_POST["descripcion"]);
 
                 $sql = "INSERT INTO categorias
                     (categoria, descripcion) 

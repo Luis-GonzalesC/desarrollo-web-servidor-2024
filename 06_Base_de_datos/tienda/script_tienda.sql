@@ -53,4 +53,8 @@ CREATE TABLE usuarios(
 );
 
 SELECT * FROM usuarios;
+SELECT usuario FROM usuarios;
+
+
+DELETE FROM usuarios where usuario = "alejandra";
 
