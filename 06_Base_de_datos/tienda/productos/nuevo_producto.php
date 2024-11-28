@@ -72,11 +72,12 @@
                     else $err_descripcion = "La descripción tiene que tener 255 carácteres como máximo";
                 }else $err_descripcion = "La descripción es obligatoria";
 
+                //Por defecto se podrá 0
                 if($tmp_stock != ''){
                     if(filter_var($tmp_stock, FILTER_VALIDATE_INT) !== FALSE){
                         if($tmp_stock >= 0 && $tmp_stock <= 999) $stock = $tmp_stock;
-                        else $err_stock = "El precio del producto tiene que ser un número entre 0 y 999";
-                    } else $err_stock = "El precio del producto tiene que ser un número ENTERO";
+                        else $err_stock = "El stock del producto tiene que ser un número entre 0 y 999";
+                    } else $err_stock = "El stock del producto tiene que ser un número ENTERO";
                 } else $stock = 0;
 
                 //Validacion de la categoria
@@ -84,7 +85,6 @@
                     if(in_array($tmp_categoria, $categorias)) $categoria = $tmp_categoria;
                     else $err_categoria = "La categoria seleccionada no es la correcta";
                 }else $err_categoria = "La categoria tiene que ser obligatorio";
-                
                 
                 // Verificar si se subió una imagen (FALTA)
                 if(isset($_FILES["imagen"])) {
@@ -110,20 +110,21 @@
         
             <div class="mb-3">
                     <label class="form-label">Nombre del producto</label>
+                    <?php if(isset($err_nombre_producto)) echo "<div class='alert alert-danger'>$err_nombre_producto</div>"?>
                     <input class="form-control" type="text" name="nombre">
-                    <?php if(isset($err_nombre_producto)) echo "<span class='error'>$err_nombre_producto</span>"?>
             </div>
 
             <div class="mb-3">
                     <label class="form-label">Precio del producto</label>
+                    <?php if(isset($err_precio_producto)) echo "<div class='alert alert-danger'>$err_precio_producto</div>"?>
                     <input class="form-control" type="text" name="precio">
-                    <?php if(isset($err_precio_producto)) echo "<span class='error'>$err_precio_producto</span>"?>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Categorias</label>
                 <!--<input class="form-control" type="text" name="categoria">-->
 
+                <?php if(isset($err_categoria)) echo "<div class='alert alert-danger'>$err_categoria</div>"?>
                 <select class="form-select" name="categoria">
                     <option selected disabled hidden>---ELIGE UNA CATEGORIA---</option>
                 <?php 
@@ -133,7 +134,6 @@
                         </option>
                 <?php } ?>
                 </select>
-                <?php if(isset($err_categoria)) echo "<span class='error'>$err_categoria</span>"?>
             </div>
 
             <div class="mb-3">

@@ -39,7 +39,7 @@
                     //echo "<h2>P' dentro</h2>";
                     session_start(); //Se crea una sesión
                     $_SESSION["usuario"] = $usuario; //Usuario logueado es usuario
-                    header("location: ../index.php"); //Me redirige al index si se ha logueado
+                    header("location: ../productos/index.php"); //Me redirige al index si se ha logueado
                     exit; //para cortar el fichero y liberar memoria
                 }
             }

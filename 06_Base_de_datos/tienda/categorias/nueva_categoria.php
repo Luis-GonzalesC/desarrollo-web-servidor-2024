@@ -24,15 +24,39 @@
             }
 
             if($_SERVER["REQUEST_METHOD"] == "POST"){
-                $categoria = depurar($_POST["categoria"]);
-                $descripcion = depurar($_POST["descripcion"]);
+                $tmp_categoria = depurar($_POST["categoria"]);
+                $tmp_descripcion = depurar($_POST["descripcion"]);
 
-                $sql = "INSERT INTO categorias
-                    (categoria, descripcion) 
-                    VALUES 
-                    ('$categoria', '$descripcion')";
+                //Validación de la categoria
+                if($tmp_categoria != '') {
+                    $maximo_BBDD = 30; //El número máximo de caracteres de la BBDD
+                    if(strlen($tmp_categoria) >= 2 && strlen($tmp_categoria) <= $maximo_BBDD){
+                        $patron = "/^[a-zA-ZáéíóúñÑÁÉÍÓÚ ]+$/";
+                        if(!preg_match($patron, $tmp_categoria)) $err_categoria = "La categoria no cumple el patron correspondiente";
+                        else $categoria = $tmp_categoria;
+                    }else $err_categoria = "La categoria debe tener entre 2 y ". $maximo_BBDD . " caracteres";
+                }else $err_categoria = "La categoria es obligatoria";
 
-                $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
+                //Validación de la descripción
+                if($tmp_descripcion != ''){
+                    if(strlen($tmp_descripcion) <= 255) $descripcion = $tmp_descripcion;
+                    else $err_descripcion = "La descripción tiene que tener 255 carácteres como máximo";
+                }else $err_descripcion = "La descripción es obligatoria";
+
+                if(isset($categoria) && isset($descripcion)){
+                    $sql = "SELECT categoria FROM categorias WHERE categoria = '$categoria'";
+                    $resultado = $_conexion -> query($sql);
+
+                    //Si no hay columnas es nulo quiere decir que no hay usuarios registrados
+                    if($resultado -> num_rows == 0){
+                        $sql = "INSERT INTO categorias 
+                        (categoria, descripcion) 
+                        VALUES 
+                        ('$categoria', '$descripcion')";
+
+                        $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
+                    }else echo "LA CATEGORIA YA EXISTE INGRESE OTRA";
+                } 
             }
         ?>
 
@@ -40,11 +64,15 @@
         
         <div class="mb-3">
                 <label class="form-label">Categoria</label>
+
+                <?php if(isset($err_categoria)) echo "<div class='alert alert-danger'>$err_categoria</div>"?>
                 <input class="form-control" type="text" name="categoria">
         </div>
 
         <div class="mb-3">
                 <label class="form-label">Descripción</label>
+
+                <?php if(isset($err_descripcion)) echo "<div class='alert alert-danger'>$err_descripcion</div>"?>
                 <input class="form-control" type="text" name="descripcion">
         </div>
 

@@ -48,7 +48,7 @@
 
             if(isset($usuario) && isset($contrasena)){
                 /*========= VERIFICACION DE USUARIO CON NOMBRE REPETIDO ===========*/
-                $sql = "SELECT usuario FROM usuarios"; //Selecciono todos los usuarios
+                $sql = "SELECT usuario FROM usuarios WHERE usuario = '$usuario'"; //Selecciono todos los usuarios
                 $resultado = $_conexion -> query($sql);
                 
                 //Si no hay columnas es nulo quiere decir que no hay usuarios registrados
@@ -56,22 +56,7 @@
                     $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
                     $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
                     $_conexion -> query($sql);
-                }else{
-                    $array_usuarios = [];
-                    while($fila = $resultado -> fetch_assoc()){
-                        array_push($array_usuarios, $fila["usuario"]); //Cada usuario lo guardo en un array
-                    }
-
-                    //Verifico si el usuario tiene el mismo nombre que el ingresado o no
-                    if(!in_array($array_usuarios, $usuario)){
-                        $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
-
-                        $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
-
-                        $_conexion -> query($sql);
-                    }else echo "EL USUARIO YA EXISTE INGRESE OTRO NOMBRE";
-                }
-                
+                }else echo "EL USUARIO YA EXISTE INGRESE OTRO NOMBRE";
             }
             
         }
