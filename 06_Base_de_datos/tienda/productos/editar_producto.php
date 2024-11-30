@@ -83,11 +83,11 @@
                 }else $err_categoria = "La categoria tiene que ser obligatorio";
                 
                 // Verificar si se subió una imagen (FALTA)
-                if(isset($_FILES["imagen"])) {
+                /*f(isset($_FILES["imagen"])) {
                     $nombre_imagen = $_FILES["imagen"]["name"];
                     $direccion_temporal = $_FILES["imagen"]["tmp_name"]; //se guarda la ruta temporalmente
                     move_uploaded_file($direccion_temporal, "../imagenes/$nombre_imagen"); // => FUNCION QUE MUEVE LA IMAGEN DE LA RUTA A NUESTRA IMAGEN
-                } else $err_imagen = "Por favor, selecciona una imagen.";
+                } else $err_imagen = "Por favor, selecciona una imagen.";*/
 
                 if(isset($nombre_producto) && isset($precio_producto) && isset($categoria) && isset($stock) && isset($descripcion)){
                     $id_producto = $_POST["id_producto"];
@@ -101,8 +101,8 @@
                             WHERE id_producto = '$id_producto'";
 
                     $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
-                    echo "<h1>SE HA ACTUALIZADO CORRECTAMENTE</h1>";
-                }else echo "<h1>NO SE HA ACTUALIZADO</h1>";
+                    echo "<div class='col-4 alert alert-success'>SE HA ACTUALIZADO</div>";
+                }else echo "<div class='col-4 alert alert-danger'>NO SE HA ACTUALIZADO</div>";
                 
             }
 
@@ -159,7 +159,7 @@
 
             <div class="mb-3">
                     <label class="form-label">Imagen</label>
-                    <input class="form-control" type="file" name="imagen">
+                    <input disabled class="form-control" type="file" name="imagen">
                 </div>
 
             <div class="mb-3">

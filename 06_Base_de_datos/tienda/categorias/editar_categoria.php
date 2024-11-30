@@ -15,15 +15,29 @@
 <body>
     <div class="container">
         <?php
+            function depurar(string $entrada) : string{
+                $salida = htmlspecialchars($entrada);
+                $salida = trim($salida);
+                $salida = preg_replace('/\$+/', ' ', $salida);
+                return $salida;
+            }
+
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $categoria = $_POST["categoria"];
-                $descripcion = $_POST["descripcion"];
+                $tmp_descripcion = depurar($_POST["descripcion"]);
 
-                $sql = "UPDATE categorias SET 
-                            descripcion = '$descripcion'
-                            WHERE categoria = '$categoria'";
+                if($tmp_descripcion != ''){
+                    if(strlen($tmp_descripcion) <= 255) $descripcion = $tmp_descripcion;
+                    else $err_descripcion = "La descripción tiene que tener 255 carácteres como máximo";
+                }else $err_descripcion = "La descripción es obligatoria";
 
-                $_conexion -> query($sql);
+                if(isset($categoria) && isset($descripcion)){
+                    $sql = "UPDATE categorias SET 
+                                descripcion = '$descripcion'
+                                WHERE categoria = '$categoria'";
+
+                    $_conexion -> query($sql);
+                }
             }
 
 
@@ -42,6 +56,7 @@
 
         <div class="mb-3">
                 <label class="form-label">Descripción</label>
+                <?php if(isset($err_descripcion)) echo "<div class='alert alert-danger'>$err_descripcion</div>"?>
                 <input class="form-control" type="text" name="descripcion" value="<?php echo $cate["descripcion"] ?>">
         </div>
 

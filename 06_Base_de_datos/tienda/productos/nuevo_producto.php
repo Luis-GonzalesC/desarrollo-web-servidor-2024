@@ -101,7 +101,8 @@
                     ('$nombre_producto', $precio_producto, '$categoria', $stock, 'imagenes/$nombre_imagen', '$descripcion')";
 
                     $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
-                }else echo "<h1>NO SE HA INSERTADO NA</h1>";
+                    echo "<div class='col-4 alert alert-success'>SE HA INSERTADO CORRECTAMENTE</div>";
+                }else echo "<div class='col-4 alert alert-danger'>NO SE HA INSERTADO NA</div>";
                 
             }
         ?>
@@ -139,20 +140,19 @@
             <div class="mb-3">
                     <label class="form-label">Stock del producto</label>
                     <input class="form-control" type="text" name="stock">
-                    <?php if(isset($err_stock)) echo "<span class='error'>$err_stock</span>"?>
+                    <?php if(isset($err_stock)) echo "<div class='alert alert-danger'>$err_stock</div>"?>
             </div>
 
             <div class="mb-3">
                     <label class="form-label">Imagen</label>
                     <input class="form-control" type="file" name="imagen">
-                    <?php if(isset($err_imagen)) echo "<span class='error'>$err_imagen</span>"?>
                 </div>
 
             <div class="mb-3">
                     <label class="form-label">Descripción del producto</label>
+                    <?php if(isset($err_descripcion)) echo "<div class='alert alert-danger'>$err_descripcion</div>"?>
                     <textarea class="form-control" name="descripcion"></textarea>
                     <!--<input class="form-control" type="text" name="descripcion">-->
-                    <?php if(isset($err_descripcion)) echo "<span class='error'>$err_descripcion</span>"?>
             </div>
 
             <div class="mb-3">

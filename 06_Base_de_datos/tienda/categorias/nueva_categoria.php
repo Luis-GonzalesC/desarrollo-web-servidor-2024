@@ -29,8 +29,9 @@
 
                 //Validación de la categoria
                 if($tmp_categoria != '') {
+                    $minimo_BBDD = 2; //El número minimo de caracteres exigido
                     $maximo_BBDD = 30; //El número máximo de caracteres de la BBDD
-                    if(strlen($tmp_categoria) >= 2 && strlen($tmp_categoria) <= $maximo_BBDD){
+                    if(strlen($tmp_categoria) >= $minimo_BBDD && strlen($tmp_categoria) <= $maximo_BBDD){
                         $patron = "/^[a-zA-ZáéíóúñÑÁÉÍÓÚ ]+$/";
                         if(!preg_match($patron, $tmp_categoria)) $err_categoria = "La categoria no cumple el patron correspondiente";
                         else $categoria = $tmp_categoria;
@@ -55,7 +56,8 @@
                         ('$categoria', '$descripcion')";
 
                         $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
-                    }else echo "LA CATEGORIA YA EXISTE INGRESE OTRA";
+                        echo "<div class='col-4 alert alert-success'>SE HA INSERTADO CORRECTAMENTE</div>";
+                    }else echo "<div class='col-4 alert alert-danger'>LA CATEGORIA YA EXISTE INGRESE OTRA</div>";
                 } 
             }
         ?>
@@ -71,7 +73,6 @@
 
         <div class="mb-3">
                 <label class="form-label">Descripción</label>
-
                 <?php if(isset($err_descripcion)) echo "<div class='alert alert-danger'>$err_descripcion</div>"?>
                 <input class="form-control" type="text" name="descripcion">
         </div>

@@ -22,6 +22,9 @@
 </head>
 <body>
     <div class="container">
+        <h2>Bienvenid@ <?php echo $_SESSION["usuario"] ?></h2>
+        <a class ="btn btn-danger" href="../usuarios/cerrar_sesion.php">Cerrar Sesión</a>
+        <h2>Listado de Categorias</h2>
         <?php
             //Esto para borrar
             if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -38,6 +41,7 @@
 
         <a class="btn btn-primary" href="nueva_categoria.php">Nueva Categoria</a>
         <a class ="btn btn-secondary" href="../productos/index.php">Productos</a>
+        <a class ="btn btn-info" href="../index.php">Index de la tienda</a>
 
         <table class="table table-striped">
             <thead class="table-primary">

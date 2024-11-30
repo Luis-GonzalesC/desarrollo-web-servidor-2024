@@ -47,10 +47,11 @@
 
         <a class="btn btn-primary" href="nuevo_producto.php">Nuevo Producto</a>
         <a class ="btn btn-secondary" href="../categorias/index.php">Categorias</a>
+        <a class ="btn btn-info" href="../index.php">Index de la tienda</a>
+
         <table class="table table-striped">
             <thead class="table-primary">
                 <tr>
-                    <th>ID</th>
                     <th>Nombre</th>
                     <th>Precio</th>
                     <th>Categoria</th>
@@ -65,7 +66,6 @@
                 <?php
                     while($fila = $resultado -> fetch_assoc()){
                         echo "<tr>";
-                        echo "<td>". $fila["id_producto"] ."</td>";
                         echo "<td>". $fila["nombre"] ."</td>";
                         echo "<td>". $fila["precio"] ."</td>";
                         echo "<td>". $fila["categoria"] ."</td>";
