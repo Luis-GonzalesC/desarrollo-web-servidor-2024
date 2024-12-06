@@ -25,9 +25,10 @@
         <?php
             if(isset($_SESSION["usuario"])){ ?>
                 <h2>Bienvenid@ <?php echo $_SESSION["usuario"] ?></h2>
-                <a class ="btn btn-danger" href="usuarios/cerrar_sesion.php">Cerrar Sesión</a> <br><br>
-                <a class ="btn btn-primary" href="productos/index.php">Productos</a>
-                <a class ="btn btn-primary" href="categorias/index.php">Categorias</a>
+                <a class ="btn btn-danger" href="usuarios/cerrar_sesion.php">Cerrar Sesión</a>
+                <a class ="btn btn-primary" href="usuarios/cambiar_credenciales.php">Modificar la Contraseña</a> <br><br>
+                <a class ="btn btn-info" href="productos/index.php">Productos</a>
+                <a class ="btn btn-info" href="categorias/index.php">Categorias</a>
         <?php }else{ ?>
                 <a class ="btn btn-danger" href="usuarios/iniciar_sesion.php">Iniciar Sesión</a>
         <?php }

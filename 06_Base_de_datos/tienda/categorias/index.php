@@ -24,6 +24,7 @@
     <div class="container">
         <h2>Bienvenid@ <?php echo $_SESSION["usuario"] ?></h2>
         <a class ="btn btn-danger" href="../usuarios/cerrar_sesion.php">Cerrar Sesión</a>
+        <a class ="btn btn-primary" href="../usuarios/cambiar_credenciales.php">Modificar la Contraseña</a>
         <h2>Listado de Categorias</h2>
         <?php
             //Esto para borrar
