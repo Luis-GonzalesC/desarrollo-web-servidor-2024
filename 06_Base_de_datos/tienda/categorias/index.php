@@ -30,7 +30,6 @@
             //Esto para borrar
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $categoria = $_POST["categoria"];
-                //echo "<h1>$id_anime</h1>";
                 $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
                 $_conexion -> query($sql);
             }
