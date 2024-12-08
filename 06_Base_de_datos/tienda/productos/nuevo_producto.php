@@ -15,6 +15,14 @@
         ini_set( "display_errors", 1);
 
         require('../util/conexion.php');//Importando la conexion php del servidor (BBDD)
+
+        session_start(); //Para recuperar lo que sea iniciado porque no podemos acceder a ese valor
+        /*Comprobamos si un usuario se ha logueado en claso contrario
+        cortamos la ejecucion*/
+        if(!isset($_SESSION["usuario"])){
+            header("location: ../usuarios/iniciar_sesion.php");
+            exit;
+        }
     ?>
 </head>
 <body>
@@ -60,7 +68,7 @@
                         $valor_maximo_BBDD = 9999.99;
                         if($tmp_precio_producto >= 0 && $tmp_precio_producto <= $valor_maximo_BBDD){
                             $patron = "/^[0-9]{1,4}(\.[0-9]{1,2})?$/";
-                            if(!preg_match($patron, $tmp_nombre_producto)) $err_precio_producto = "El precio del producto no cumple el patrón";
+                            if(!preg_match($patron, $tmp_precio_producto)) $err_precio_producto = "El precio del producto no cumple el patrón";
                             else $precio_producto = $tmp_precio_producto;
                         } else $err_precio_producto = "El precio del producto es debe ser estar entre 0 y ". $valor_maximo_BBDD . " como máximo";
                     } else $err_precio_producto = "El precio del producto tiene que ser un número";
@@ -86,15 +94,18 @@
                     else $err_categoria = "La categoria seleccionada no es la correcta";
                 }else $err_categoria = "La categoria tiene que ser obligatorio";
                 
-                // Verificar si se subió una imagen (FALTA)
-                if(isset($_FILES["imagen"])) {
-                    $nombre_imagen = $_FILES["imagen"]["name"];
-                    $direccion_temporal = $_FILES["imagen"]["tmp_name"]; //se guarda la ruta temporalmente
-                    move_uploaded_file($direccion_temporal, "../imagenes/$nombre_imagen"); // => FUNCION QUE MUEVE LA IMAGEN DE LA RUTA A NUESTRA IMAGEN
+                //Validación de la imagen
+                if(($_FILES["imagen"]["name"] != '')) {
+                    $tipos_imagen = ["image/png", "image/jpg", "image/jpeg", "image/webp"];
+                    if(in_array($_FILES["imagen"]["type"], $tipos_imagen)){
+                        $nombre_imagen = $_FILES["imagen"]["name"];
+                        $direccion_temporal = $_FILES["imagen"]["tmp_name"]; //se guarda la ruta temporalmente
+                        move_uploaded_file($direccion_temporal, "../imagenes/$nombre_imagen"); // => FUNCION QUE MUEVE LA IMAGEN DE LA RUTA A NUESTRA IMAGEN
+                    } $err_imagen = "El tipo de imagen no es el correcto";
                 } else $err_imagen = "Por favor, selecciona una imagen.";
                 
                 //SI TODO TA BIEN SE AGREGA
-                if(isset($nombre_producto) && isset($precio_producto) && isset($categoria) && isset($stock) && isset($descripcion)){
+                if(isset($nombre_producto) && isset($precio_producto) && isset($categoria) && isset($stock) && isset($descripcion) && isset($nombre_imagen)){
                     $sql = "INSERT INTO productos 
                     (nombre, precio, categoria, stock, imagen, descripcion) 
                     VALUES 
@@ -102,7 +113,7 @@
 
                     $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
                     echo "<div class='col-4 alert alert-success'>SE HA INSERTADO CORRECTAMENTE</div>";
-                }else echo "<div class='col-4 alert alert-danger'>NO SE HA INSERTADO NA</div>";
+                }
                 
             }
         ?>
@@ -145,7 +156,9 @@
 
             <div class="mb-3">
                     <label class="form-label">Imagen</label>
+                    <?php if(isset($err_imagen)) echo "<div class='alert alert-danger'>$err_imagen</div>"?>
                     <input class="form-control" type="file" name="imagen">
+
                 </div>
 
             <div class="mb-3">

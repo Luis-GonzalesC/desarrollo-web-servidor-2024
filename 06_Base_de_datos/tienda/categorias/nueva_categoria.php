@@ -10,6 +10,14 @@
         ini_set( "display_errors", 1);
 
         require('../util/conexion.php');//Importando la conexion php del servidor (BBDD)
+
+        session_start(); //Para recuperar lo que sea iniciado porque no podemos acceder a ese valor
+        /*Comprobamos si un usuario se ha logueado en claso contrario
+        cortamos la ejecucion*/
+        if(!isset($_SESSION["usuario"])){
+            header("location: ../usuarios/iniciar_sesion.php");
+            exit;
+        }
     ?>
 </head>
 <body>
@@ -40,8 +48,11 @@
 
                 //Validación de la descripción
                 if($tmp_descripcion != ''){
-                    if(strlen($tmp_descripcion) <= 255) $descripcion = $tmp_descripcion;
-                    else $err_descripcion = "La descripción tiene que tener 255 carácteres como máximo";
+                    if(strlen($tmp_descripcion) <= 255) {
+                        $patron = "/^[0-9a-zA-ZáéíóúñÑÁÉÍÓÚ., ]+$/";
+                        if(!preg_match($patron, $tmp_descripcion)) $err_descripcion = "La descripción no cumple el patron correspondiente";
+                        else $descripcion = $tmp_descripcion;
+                    }else $err_descripcion = "La descripción tiene que tener 255 carácteres como máximo";
                 }else $err_descripcion = "La descripción es obligatoria";
 
                 if(isset($categoria) && isset($descripcion)){

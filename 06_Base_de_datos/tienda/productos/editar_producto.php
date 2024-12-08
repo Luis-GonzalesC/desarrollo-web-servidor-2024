@@ -11,6 +11,14 @@
         ini_set( "display_errors", 1);
 
         require('../util/conexion.php');//Importando la conexion php del servidor (BBDD)
+        
+        session_start(); //Para recuperar lo que sea iniciado porque no podemos acceder a ese valor
+        /*Comprobamos si un usuario se ha logueado en claso contrario
+        cortamos la ejecucion*/
+        if(!isset($_SESSION["usuario"])){
+            header("location: ../usuarios/iniciar_sesion.php");
+            exit;
+        }
     ?>
 </head>
 <body>

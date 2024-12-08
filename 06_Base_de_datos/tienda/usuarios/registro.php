@@ -23,13 +23,19 @@
             $tmp_usuario = depurar($_POST["usuario"]);
             $tmp_contrasena = depurar($_POST["contrasena"]);
 
-            if($tmp_usuario != ''){
-                if(strlen($tmp_usuario) >= 3 && strlen($tmp_usuario) <= 15){
-                    $patron = "/^[a-zA-Z0-9]+$/";
-                    if(!preg_match($patron, $tmp_usuario)) $err_usuario = "El nombre de usuario no cumple con el patrón, solo puede tener letras y números";
-                    else $usuario = $tmp_usuario;
-                }else $err_usuario = "El nombre de usuario debe tener entre 3 y 15 caracteres";
-            }else $err_usuario = "El nombre de usuario es obligatorio";
+            /*========= VERIFICACION DE USUARIO CON NOMBRE REPETIDO ===========*/
+            $sql = "SELECT usuario FROM usuarios WHERE usuario = '$tmp_usuario'"; //Selecciono todos los usuarios
+            $resultado = $_conexion -> query($sql);
+
+            if($resultado -> num_rows == 0){//Compruebo si ya existe el usuario
+                if($tmp_usuario != ''){
+                    if(strlen($tmp_usuario) >= 3 && strlen($tmp_usuario) <= 15){
+                        $patron = "/^[a-zA-Z0-9]+$/";
+                        if(!preg_match($patron, $tmp_usuario)) $err_usuario = "El nombre de usuario no cumple con el patrón, solo puede tener letras y números";
+                        else $usuario = $tmp_usuario;
+                    }else $err_usuario = "El nombre de usuario debe tener entre 3 y 15 caracteres";
+                }else $err_usuario = "El nombre de usuario es obligatorio";
+            }else $err_registro = "EL USUARIO YA EXISTE INGRESE OTRO NOMBRE";
 
             if($tmp_contrasena != ''){
                 if(strlen($tmp_contrasena) >= 8 && strlen($tmp_contrasena) <= 15){
@@ -40,16 +46,9 @@
             }else $err_contrasena = "La contraseña es obligatoria";
 
             if(isset($usuario) && isset($contrasena)){
-                /*========= VERIFICACION DE USUARIO CON NOMBRE REPETIDO ===========*/
-                $sql = "SELECT usuario FROM usuarios WHERE usuario = '$usuario'"; //Selecciono todos los usuarios
-                $resultado = $_conexion -> query($sql);
-                
-                //Si no hay columnas es nulo quiere decir que no hay usuarios registrados
-                if($resultado -> num_rows == 0){
-                    $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
-                    $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
-                    $_conexion -> query($sql);
-                }else $err_registro = "EL USUARIO YA EXISTE INGRESE OTRO NOMBRE";
+                $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
+                $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+                $_conexion -> query($sql);
             }
             
         }
@@ -57,7 +56,7 @@
     <div class="container">
         <?php if(isset($err_registro)) echo "<div class='col-4 alert alert-warning'>$err_registro</div>"?>
         <h1>Formulario de Registro</h1>
-        <form class="col-4" action="" method="post" enctype="multipart/form-data">
+        <form class="col-4" action="" method="post">
             <div class="mb-3">
                 <label class="form-label">Usuario</label>
                 <?php if(isset($err_usuario)) echo "<div class='alert alert-danger'>$err_usuario</div>"?>

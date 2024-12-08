@@ -23,13 +23,11 @@
             $tmp_usuario = depurar($_POST["usuario"]);
             $tmp_contrasena = depurar($_POST["contrasena"]);
             
-            if($tmp_usuario != ''){
-                $usuario = $tmp_usuario;
-            }else $err_usuario = "El usuario es obligatorio";
+            if($tmp_usuario != '') $usuario = $tmp_usuario;
+            else $err_usuario = "El usuario es obligatorio";
 
-            if($tmp_contrasena != ''){
-                $contrasena = $tmp_contrasena;
-            }else $err_contra = "La contraseña es obligatorio";
+            if($tmp_contrasena != '') $contrasena = $tmp_contrasena;
+            else $err_contra = "La contraseña es obligatorio";
 
             if(isset($usuario) && isset($contrasena)){
                 $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";//Sacamos los usuarios de la base de datos
