@@ -38,13 +38,25 @@
                 $direccion_temporal = $_FILES["imagen"]["tmp_name"]; //se guarda la ruta temporalmente
                 move_uploaded_file($direccion_temporal, "imagenes/$nombre_imagen"); // => FUNCION QUE MUEVE LA IMAGEN DE LA RUTA A NUESTRA IMAGEN
 
-                $sql = "INSERT INTO consolas
+                /*$sql = "INSERT INTO consolas
                     (nombre, fabricante, generacion, unidades_vendidas, imagen) 
                     VALUES 
                     ('$nombre', '$fabricante', $generacion, $unidades_vendidas, './imagenes/$nombre_imagen')";
 
-                $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
+                $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos*/ 
 
+                $imagen = './imagenes/$nombre_imagen';
+                #1. Prepare
+                $sql = $_conexion -> prepare("INSERT INTO consolas
+                    (nombre, fabricante, generacion, unidades_vendidas, imagen) 
+                    VALUES 
+                    (?,?,?,?,?)");
+
+                #2. Binding
+                $sql -> bind_param("ssiis", $nombre, $fabricante, $generacion, $unidades_vendidas, $imagen);
+
+                #3. Execute
+                $sql -> execute();
             }
         ?>
         <form class="col-4" action="" method="post" enctype="multipart/form-data">

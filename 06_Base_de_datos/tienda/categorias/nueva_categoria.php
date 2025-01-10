@@ -61,12 +61,22 @@
 
                     //Si no hay columnas es nulo quiere decir que no hay usuarios registrados
                     if($resultado -> num_rows == 0){
-                        $sql = "INSERT INTO categorias 
+                        /*$sql = "INSERT INTO categorias 
                         (categoria, descripcion) 
                         VALUES 
                         ('$categoria', '$descripcion')";
 
-                        $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
+                        $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos*/
+
+                        #1. Prepare
+                        $sql = $_conexion -> prepare("INSERT INTO categorias (categoria, descripcion) VALUES (?,?)");
+
+                        #2. Binding
+                        $sql -> bind_param("ss", $categoria, $descripcion);
+
+                        #3. Execute
+                        $sql -> execute();
+
                         echo "<div class='col-4 alert alert-success'>SE HA INSERTADO CORRECTAMENTE</div>";
                     }else echo "<div class='col-4 alert alert-danger'>LA CATEGORIA YA EXISTE INGRESE OTRA</div>";
                 } 

@@ -30,12 +30,19 @@
             //Esto para borrar
             if($_SERVER["REQUEST_METHOD"] == "POST"){
                 $categoria = $_POST["categoria"];
-                $sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
-                $_conexion -> query($sql);
+                /*$sql = "DELETE FROM categorias WHERE categoria = '$categoria'";
+                $_conexion -> query($sql);*/
+
+                #1. Prepare
+                $sql = $_conexion -> prepare("DELETE FROM categorias WHERE categoria = ?");
+                #2. Binding
+                $sql -> bind_param("s", $categoria);
+                #3. Execute
+                $sql -> execute();
             }
 
             $sql = "SELECT * FROM categorias";
-            $resultado = $_conexion -> query($sql); // => Devuelve un objeto
+            $resultado = $_conexion -> query($sql); // => Devuelve un objeto*
 
         ?>
 

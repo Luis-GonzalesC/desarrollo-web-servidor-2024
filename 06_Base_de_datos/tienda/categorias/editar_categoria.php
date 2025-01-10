@@ -43,11 +43,22 @@
                 }else $err_descripcion = "La descripción es obligatoria";
 
                 if(isset($categoria) && isset($descripcion)){
-                    $sql = "UPDATE categorias SET 
+                    /*$sql = "UPDATE categorias SET 
                                 descripcion = '$descripcion'
                                 WHERE categoria = '$categoria'";
 
-                    $_conexion -> query($sql);
+                    $_conexion -> query($sql);*/
+
+                    #1. Prepare
+                    $sql = $_conexion -> prepare("UPDATE categorias SET descripcion = ?
+                                WHERE categoria = ?");
+                    #2. Binding
+                    $sql -> bind_param("ss", $descripcion, $categoria);
+
+                    #3. Execute
+                    $sql -> execute();
+
+
                     echo "<div class='col-4 alert alert-success'>SE HA ACTUALIZADO</div>";
                 }else echo "<div class='col-4 alert alert-danger'>NO SE HA ACTUALIZADO</div>";
             }
@@ -55,8 +66,21 @@
 
             /*Esto es el bloque de código para poder modificar y mostrar lo que hay en cada cosa*/
             $categoria = $_GET["categoria"];
-            $sql = "SELECT * FROM categorias WHERE categoria = '$categoria'";//El id de anime viene desde el otro lado
-            $resultado = $_conexion -> query($sql);
+            /*$sql = "SELECT * FROM categorias WHERE categoria = '$categoria'";//El id de la categoria viene desde el otro lado
+            $resultado = $_conexion -> query($sql);*/
+
+            #1. Prepare
+            $sql = $_conexion -> prepare("SELECT * FROM categorias WHERE categoria = ?");
+
+            #2. Binding
+            $sql -> bind_param("s", $categoria);
+
+            #3. Execute
+            $sql -> execute();
+
+            #4. Retrieve
+            $resultado = $sql -> get_result();
+
             $cate = $resultado -> fetch_assoc();
         ?>
         <form class="col-4" action="" method="post">

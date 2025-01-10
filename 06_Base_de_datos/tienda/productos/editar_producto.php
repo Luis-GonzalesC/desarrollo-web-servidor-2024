@@ -100,7 +100,7 @@
                 if(isset($nombre_producto) && isset($precio_producto) && isset($categoria) && isset($stock) && isset($descripcion)){
                     $id_producto = $_POST["id_producto"];
 
-                    $sql = "UPDATE productos SET
+                    /*$sql = "UPDATE productos SET
                             nombre = '$nombre_producto',
                             precio = '$precio_producto',
                             categoria = '$categoria',
@@ -108,7 +108,23 @@
                             descripcion = '$descripcion'
                             WHERE id_producto = '$id_producto'";
 
-                    $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
+                    $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos*/
+
+                    #1. Prepare
+                    $sql = $_conexion -> prepare("UPDATE productos SET
+                            nombre = ?,
+                            precio = ?,
+                            categoria = ?,
+                            stock = ?,
+                            descripcion = ?
+                            WHERE id_producto = ?");
+
+                    #2. Binding
+                    $sql -> bind_param("sisisi", $nombre_producto, $precio_producto, $categoria, $stock, $descripcion, $id_producto);
+
+                    #3. Execute
+                    $sql -> execute();
+
                     echo "<div class='col-4 alert alert-success'>SE HA ACTUALIZADO</div>";
                 }else echo "<div class='col-4 alert alert-danger'>NO SE HA ACTUALIZADO</div>";
                 
@@ -116,8 +132,22 @@
 
             /*Esto es el bloque de código para poder modificar el producto*/
             $id_producto = $_GET["id_producto"];
-            $sql = "SELECT * FROM productos WHERE id_producto = '$id_producto'";//El id de producto viene desde el otro lado
-            $resultado = $_conexion -> query($sql);
+            /*$sql = "SELECT * FROM productos WHERE id_producto = '$id_producto'";//El id de producto viene desde el otro lado
+            $resultado = $_conexion -> query($sql);*/
+
+            //Esto con el paso adicional porque es un SELECT
+            #1. Prepare
+            $sql = $_conexion -> prepare("SELECT * FROM productos WHERE id_producto = ?");
+
+            #2. Binding
+            $sql -> bind_param("i", $id_producto);
+
+            #3. Execute
+            $sql -> execute();
+
+            #4. Retrieve
+            $resultado = $sql -> get_result();
+
             $producto = $resultado -> fetch_assoc();
         ?>
 

@@ -106,12 +106,24 @@
                 
                 //SI TODO TA BIEN SE AGREGA
                 if(isset($nombre_producto) && isset($precio_producto) && isset($categoria) && isset($stock) && isset($descripcion) && isset($nombre_imagen)){
-                    $sql = "INSERT INTO productos 
+                    /*$sql = "INSERT INTO productos 
                     (nombre, precio, categoria, stock, imagen, descripcion) 
                     VALUES 
                     ('$nombre_producto', $precio_producto, '$categoria', $stock, 'imagenes/$nombre_imagen', '$descripcion')";
 
-                    $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
+                    $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos*/
+
+                    $imagen = "imagenes/$nombre_imagen";
+                    #1. Prepare
+                    $sql = $_conexion -> prepare("INSERT INTO productos 
+                    (nombre, precio, categoria, stock, imagen, descripcion) 
+                    VALUES (?,?,?,?,?,?)");
+
+                    #2. Binding
+                    $sql -> bind_param("sisiss", $nombre_producto, $precio_producto, $categoria, $stock, $imagen, $descripcion);
+
+                    #3. Execute
+                    $sql -> execute();
                     echo "<div class='col-4 alert alert-success'>SE HA INSERTADO CORRECTAMENTE</div>";
                 }
                 

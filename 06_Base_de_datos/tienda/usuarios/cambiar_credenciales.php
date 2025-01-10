@@ -52,11 +52,23 @@
                 if(isset($usuario) && isset($contrasena)){
                     $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
 
-                    $sql = "UPDATE usuarios SET 
+                    /*$sql = "UPDATE usuarios SET 
                                 contrasena = '$contrasena_cifrada'
                                 WHERE usuario = '$usuario'";
 
-                    $_conexion -> query($sql);
+                    $_conexion -> query($sql);*/
+
+                    #1. Prepare
+                    $sql = $_conexion -> prepare("UPDATE usuarios SET 
+                                contrasena = ?
+                                WHERE usuario = ?");
+
+                    #2. Binding
+                    $sql -> bind_param("ss", $contrasena_cifrada ,$usuario);
+
+                    #3. Execute
+                    $sql -> execute();
+
                     echo "<div class='col-4 alert alert-success'>SE HA ACTUALIZADO LA CONTRASEÑA</div>";
                 }else echo "<div class='col-4 alert alert-danger'>NO SE HA ACTUALIZADO LA CONTRASEÑA</div>";
             }

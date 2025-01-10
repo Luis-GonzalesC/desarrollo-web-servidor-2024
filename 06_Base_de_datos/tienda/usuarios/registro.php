@@ -24,8 +24,20 @@
             $tmp_contrasena = depurar($_POST["contrasena"]);
 
             /*========= VERIFICACION DE USUARIO CON NOMBRE REPETIDO ===========*/
-            $sql = "SELECT usuario FROM usuarios WHERE usuario = '$tmp_usuario'"; //Selecciono todos los usuarios
-            $resultado = $_conexion -> query($sql);
+            /*$sql = "SELECT usuario FROM usuarios WHERE usuario = '$tmp_usuario'"; //Selecciono todos los usuarios
+            $resultado = $_conexion -> query($sql);*/
+
+            #1. Prepare
+            $sql = $_conexion -> prepare("SELECT usuario FROM usuarios WHERE usuario = ?");
+
+            #2. Binding
+            $sql -> bind_param("s", $tmp_usuario);
+
+            #3. Execute
+            $sql -> execute();
+
+            #4. Retrieve
+            $resultado = $sql -> get_result();
 
             if($resultado -> num_rows == 0){//Compruebo si ya existe el usuario
                 if($tmp_usuario != ''){
@@ -47,8 +59,17 @@
 
             if(isset($usuario) && isset($contrasena)){
                 $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
-                $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
-                $_conexion -> query($sql);
+                /*$sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+                $_conexion -> query($sql);*/
+
+                #1. Prepare
+                $sql = $_conexion -> prepare("INSERT INTO usuarios VALUES (?,?)");
+
+                #2. Binding
+                $sql -> bind_param("ss", $usuario, $contrasena_cifrada);
+
+                #3. Execute
+                $sql -> execute();
             }
             
         }

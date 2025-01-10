@@ -20,9 +20,18 @@
 
             $contrasena_cifrada = password_hash($contrasena, PASSWORD_DEFAULT);//Coge por defecto la contraseña y la cifra
 
-            $sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
+            /*$sql = "INSERT INTO usuarios VALUES ('$usuario', '$contrasena_cifrada')";
 
-            $_conexion -> query($sql);
+            $_conexion -> query($sql);*/
+
+            #1. Prepare
+            $sql = $_conexion -> prepare("INSERT INTO usuarios VALUES (?,?)");
+
+            #2. Binding
+            $sql -> bind_param("ss", $usuario, $contrasena_cifrada);
+
+            #3. Execute
+            $sql -> execute();
         }
     ?>
     <div class="container">

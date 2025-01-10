@@ -20,12 +20,23 @@
                 $fabricante = $_POST["fabricante"];
                 $pais = $_POST["pais"];
 
-                $sql = "INSERT INTO fabricantes
+                /*$sql = "INSERT INTO fabricantes
                     (fabricantes, pais) 
                     VALUES 
                     ('$fabricante', '$pais')";
 
-                $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos
+                $_conexion -> query($sql); //Con esto se puede rellenar el formulario y se agregará a la base de datos*/
+                # 1. Prepare
+                $sql = $_conexion -> prepare("INSERT INTO fabricantes
+                    (fabricantes, pais) 
+                    VALUES 
+                    (?, ?");
+                
+                # 2. Binding
+                $sql -> bind_param("ssiii", $titulo, $nombre_estudio, $anno_estreno, $num_temporadas, $id_anime);
+
+                # 3. Execute
+                $sql -> execute();
 
             }
         ?>

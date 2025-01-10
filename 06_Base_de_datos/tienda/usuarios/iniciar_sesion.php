@@ -30,9 +30,22 @@
             else $err_contra = "La contraseña es obligatorio";
 
             if(isset($usuario) && isset($contrasena)){
-                $sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";//Sacamos los usuarios de la base de datos
+                /*$sql = "SELECT * FROM usuarios WHERE usuario = '$usuario'";//Sacamos los usuarios de la base de datos
 
-                $resultado = $_conexion -> query($sql);//cogemos la consulta
+                $resultado = $_conexion -> query($sql);//cogemos la consulta*/
+
+                #1. Prepare
+                $sql = $_conexion -> prepare("SELECT * FROM usuarios WHERE usuario = ?");
+
+                #2. Binding
+                $sql -> bind_param("s", $usuario);
+
+                #3. Execute
+                $sql -> execute();
+
+                #4. Retrieve
+                $resultado = $sql -> get_result(); //Se agrega una nueva seguridad porque es un select
+
                 //var_dump($resultado); cogemos el campo num_rows para ver si hay algo o no
                 if($resultado -> num_rows == 0){
                     $err_usuario = "El usuario no existe";
