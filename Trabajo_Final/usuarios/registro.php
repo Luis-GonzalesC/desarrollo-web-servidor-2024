@@ -8,17 +8,42 @@
     <title>Registro</title>
 </head>
 <body>
+    <?php
+        function depurar(string $entrada) : string{
+            $salida = htmlspecialchars($entrada);
+            return $salida;
+        }
+
+        if($_SERVER["REQUEST_METHOD"] == "POST"){
+            $tmp_usuario = depurar($_POST["usuario"]);
+            $tmp_contrasena = depurar($_POST["contrasena"]);
+            
+            //Validando el usuario
+            if($tmp_usuario != '') $usuario = $tmp_usuario;
+            else $err_usuario = "El usuario es obligatorio";
+
+            //Validando la contraseña
+            if($tmp_contrasena != '') $contrasena = $tmp_contrasena;
+            else $err_contra = "La contraseña es obligatorio";
+
+            if(isset($usuario) && isset($contrasena)){
+                
+            }
+        }
+    ?>
     <form action="" method="post">
         <div class="box">
             <div class="form">
                 <h2> Registro</h2>
                 <div class="inputBox">
                     <span>Usuario</span>
+                    <?php if(isset($err_usuario)) echo "<div class='alert alert-danger'>$err_usuario</div>"?>
                     <input type="text" name="usuario">
                 </div>
                 <div class="inputBox">
                     <span>Contraseña</span>
-                    <input type="text" name="contrasena">
+                    <?php if(isset($err_contra)) echo "<div class='alert alert-danger'>$err_contra</div>"?>
+                    <input type="password" name="contrasena">
                 </div>
                 <div class="links">
                     <a href="iniciar_sesion.php">Iniciar Sesión</a>
