@@ -6,7 +6,7 @@
     include("conexion_pdo.php");
 
     $metodo = $_SERVER["REQUEST_METHOD"];
-    $entrada = json_decode(file_get_contents("php://input"));//Almacena en la entrada los parámetros que almacena un formularios
+    $entrada = json_decode(file_get_contents("php://input"), true);//Almacena en la entrada los parámetros que almacena un formularios
 
     switch ($metodo) {
         case "GET":
@@ -27,7 +27,7 @@
 
     function manejarGet($_conexion) { //select
         //echo json_encode(["metodo" => "get"]);
-        $sql = "SELECT * FROM estudios";
+        $sql = "SELECT * FROM animes";
         //statement
         $stmt = $_conexion -> prepare($sql);
         $stmt -> execute(); //statement
@@ -37,14 +37,15 @@
 
     function manejarPost($_conexion, $entrada) { //insertar
         //echo json_encode(["metodo" => "post"]);
-        $sql = "INSERT INTO estudios VALUES (:nombre_estudio, :ciudad, :anno_fundacion)";
+        $sql = "INSERT INTO animes (titulo, nombre_estudio, anno_estreno, num_temporadas) VALUES (:titulo, :nombre_estudio, :anno_estreno, :num_temporadas)";
         //en vez de poner interrogacion, se usan dos puntos y el nombre de la variable correspondiente
         $stmt = $_conexion -> prepare($sql);
         $stmt -> execute([
             //pilla la variable (lo que esta entre comillas) de la query y el valor (comillas despues de la flecha) lo pilla del formulario
+            "titulo" => $entrada["titulo"],
             "nombre_estudio" => $entrada["nombre_estudio"],
-            "ciudad" => $entrada["ciudad"],
-            "anno_fundacion" => $entrada["anno_fundacion"]
+            "anno_estreno" => $entrada["anno_estreno"],
+            "num_temporadas" => $entrada["num_temporadas"]
         ]);
 
         if ($stmt) { //si se ha ejecutado bien
@@ -60,10 +61,10 @@
 
     function manejarDelete($_conexion, $entrada) {
         //echo json_encode(["metodo" => "delete"]);
-        $sql = "DELETE FROM estudios WHERE nombre_estudio = :nombre_estudio";
+        $sql = "DELETE FROM animes WHERE id_anime = :id_anime";
         $stmt = $_conexion -> prepare($sql);
         $stmt -> execute([
-            "nombre_estudio" => $entrada["nombre_estudio"]
+            "id_anime" => $entrada["id_anime"]
         ]);
 
         if ($stmt) {
