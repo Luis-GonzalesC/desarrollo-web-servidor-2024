@@ -71,6 +71,7 @@ body{
     position: relative;
     width: 300px;
     margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .inputBox input{

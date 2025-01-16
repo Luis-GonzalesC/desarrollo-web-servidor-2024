@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/style.css">
-    <title>Iniciar Sesión</title>
+    <title>Registro</title>
 </head>
 <body>
     <form action="" method="post">
         <div class="box">
             <div class="form">
-                <h2> Iniciar Sesión</h2>
+                <h2> Registro</h2>
                 <div class="inputBox">
                     <span>Usuario</span>
                     <input type="text" name="usuario">
@@ -21,7 +21,7 @@
                     <input type="text" name="contrasena">
                 </div>
                 <div class="links">
-                    <a href="registro.php">Registro</a>
+                    <a href="iniciar_sesion.php">Iniciar Sesión</a>
                 </div>
                 <input type="submit" value="Iniciar">
             </div>
