@@ -6,7 +6,7 @@
     include("conexion_pdo.php");
 
     $metodo = $_SERVER["REQUEST_METHOD"];
-    $entrada = json_decode(file_get_contents("php://input"));//Almacena en la entrada los parámetros que almacena un formularios
+    $entrada = json_decode(file_get_contents("php://input"),true);//Almacena en la entrada los parámetros que almacena un formularios
 
     switch ($metodo) {
         case "GET":
@@ -26,13 +26,56 @@
     }
 
     function manejarGet($_conexion) { //select
+        /*if(isset($_GET["ciudad"])){
+            $sql = "SELECT * FROM estudios WHERE ciudad = :ciudad";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "ciudad" => $_GET["ciudad"]
+            ]);
+        }else{
+            $sql = "SELECT * FROM estudios";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute();
+        }
+        $resultado = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($resultado);*/
+
+        if(isset($_GET["ciudad"]) && isset($_GET["anno_fundacion"])){
+            $sql = "SELECT * FROM estudios WHERE ciudad = :ciudad AND anno_fundacion = :anno_fundacion";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "ciudad" => $_GET["ciudad"],
+                "anno_fundacion" => $_GET["anno_fundacion"]
+            ]);
+        }else if(isset($_GET["ciudad"])){
+            $sql = "SELECT * FROM estudios WHERE ciudad = :ciudad";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "ciudad" => $_GET["ciudad"]
+            ]);
+        }else if(isset($_GET["anno_fundacion"])){
+            $sql = "SELECT * FROM estudios WHERE anno_fundacion = :anno_fundacion";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute([
+                "anno_fundacion" => $_GET["anno_fundacion"]
+            ]);
+        } else{
+            $sql = "SELECT * from estudios";
+            $stmt = $_conexion -> prepare($sql);
+            $stmt -> execute();
+        }
+        $resultado = $stmt -> fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($resultado);
+
         //echo json_encode(["metodo" => "get"]);
-        $sql = "SELECT * FROM estudios";
+        /*$sql = "SELECT * FROM estudios";
         //statement
         $stmt = $_conexion -> prepare($sql);
         $stmt -> execute(); //statement
         $resultado = $stmt -> fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($resultado);
+        echo json_encode($resultado);*/
+        //echo json_encode(["ciudad" => $_GET["ciudad"]]);
+
     }
 
     function manejarPost($_conexion, $entrada) { //insertar
@@ -48,9 +91,9 @@
         ]);
 
         if ($stmt) { //si se ha ejecutado bien
-            echo json_encode(["mensaje" => "El anime se ha creado."]);
+            echo json_encode(["mensaje" => "El estudio se ha creado."]);
         } else {
-            echo json_encode(["mensaje" => "Error al crear el anime."]);
+            echo json_encode(["mensaje" => "Error al crear el estudio."]);
         }
     }
 
@@ -67,9 +110,9 @@
         ]);
 
         if ($stmt) {
-            echo json_encode(["mensaje" => "El anime se ha borrado."]);
+            echo json_encode(["mensaje" => "El estudio se ha borrado."]);
         } else {
-            echo json_encode(["mensaje" => "Error al borrar el anime."]);
+            echo json_encode(["mensaje" => "Error al borrar el estudio."]);
         }
     }
 ?>
