@@ -4,8 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Id de los animes</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="bootstrap.css">
+    <style>
+        *{
+            font-size: 1.1rem;
+            text-align: justify;
+        }
+    </style>
     <?php
         error_reporting( E_ALL );
         ini_set( "display_errors", 1);
@@ -30,22 +35,29 @@
     ?>
 
     <div class="container">
+        <a class ="btn btn-danger mt-5" href="top_anime.php">Regresar</a>
+
         <div class="row">
-            <div class="col-6">
+            <div class="col mt-5">
                 <h1><?php echo $anime["title"] ?> </h1>
+            </div>
+            <div class="col-1 offset mt-5">
+                <h3> <?php echo $anime["year"] ?> </h3>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-3 d-flex justify-content-center">
                 <img src="<?php echo $anime["images"]["jpg"]["image_url"]?>" alt="<?php echo $anime["title"] ?>">
             </div>
-            <div class="col-6 mt-5">
-                <h3> <?php echo $anime["year"] ?> </h3>
+            <div class="col mt-3">
                 <p> <?php echo $anime["synopsis"] ?> </p>
             </div>
         </div>
 
-        <div class="offset-4">
-            <iframe width="420" height="315" src="<?php echo $anime["trailer"]["embed_url"]?>"> </iframe>
+        <div class="offset-4 mt-5 mb-3">
+            <iframe width="600" height="350" src="<?php echo $anime["trailer"]["embed_url"]?>"> </iframe>
         </div>
         
-        <a class ="btn btn-danger" href="top_anime.php">Regresar</a>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
