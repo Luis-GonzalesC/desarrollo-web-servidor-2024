@@ -23,6 +23,8 @@
             header("location: top_anime.php");
         }
         $id_anime = $_GET["id_anime"];
+        $tipo = $_GET["type"];
+        $pagina = $_GET["page"];
 
         $url = "https://api.jikan.moe/v4/anime/$id_anime/full";//Link de la conexion
 
@@ -38,7 +40,7 @@
     ?>
 
     <div class="container">
-        <a class ="btn btn-danger mt-5" href="top_anime.php">Regresar</a>
+        <a class ="btn btn-danger mt-5" href="top_anime.php?type=<?php echo $tipo?>&page=<?php echo $pagina?>">Regresar</a>
 
         <div class="row">
             <div class="col mt-5">
@@ -58,12 +60,12 @@
         </div>
 
         <div class="offset-4 mt-5 mb-3">
-            <iframe width="600" height="350" src="<?php echo $anime["trailer"]["embed_url"]?>"> </iframe>
+            <iframe allowfullscreen width="600" height="350" src="<?php echo $anime["trailer"]["embed_url"]?>"> </iframe>
         </div>
 
         <div class="row">
-            <div class="col mt-5 mb-3">
-                <h1>---LISTA DE GENERO---</h1>
+            <div class="col-5 mt-5 mb-3 offset-2">
+                <h1>---LISTA GENERO---</h1>
                 <ul>
                     <?php
                         foreach ($anime["genres"] as $genero) { ?>
@@ -71,8 +73,8 @@
                     <?php } ?>
                 </ul>
             </div>
-            <div class="col mt-5 mb-3">
-                <h1>---LISTA DE PRODUCTORAS---</h1>
+            <div class="col-5 mt-5 mb-3">
+                <h1>---LISTA PRODUCTORAS---</h1>
                 <ul>
                     <?php
                         foreach ($anime["producers"] as $genero) { ?>
@@ -82,21 +84,23 @@
             </div>
         </div>
 
-        <div class="col mt-5 mb-3">
-            <h1>---LISTA DE ANIMES---</h1>
-            <ul>
-                <?php
-                    foreach ($anime["relations"] as $anime) { 
-                        foreach ($anime["entry"] as $seriesita){
-                            if($seriesita["type"] == "anime"){?>
-                                <ul>
-                                    <li><?php echo $seriesita["name"]?></li>
-                                </ul>
-                        <?php } ?>
-                <?php
-                        } 
-                    }?>
-            </ul>
+        <div class="row">
+            <div class="col mt-5 mb-3 offset-4">
+                <h1>---LISTA DE ANIMES---</h1>
+                <ul>
+                    <?php
+                        foreach ($anime["relations"] as $anime) { 
+                            foreach ($anime["entry"] as $seriesita){
+                                if($seriesita["type"] == "anime"){?>
+                                    <ul>
+                                        <li><?php echo $seriesita["name"]?></li>
+                                    </ul>
+                            <?php } ?>
+                    <?php
+                            }
+                        }?>
+                </ul>
+            </div>
         </div>
         
     </div>
