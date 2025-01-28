@@ -19,9 +19,12 @@
 </head>
 <body>
     <?php
+        if(!isset($_GET["id_anime"])){
+            header("location: top_anime.php");
+        }
         $id_anime = $_GET["id_anime"];
 
-        $url = "https://api.jikan.moe/v4/anime/$id_anime";//Link de la conexion
+        $url = "https://api.jikan.moe/v4/anime/$id_anime/full";//Link de la conexion
 
         $curl = curl_init();//Iniciar la conexion
         curl_setopt($curl, CURLOPT_URL, $url); //Accedemos a la url
@@ -56,6 +59,44 @@
 
         <div class="offset-4 mt-5 mb-3">
             <iframe width="600" height="350" src="<?php echo $anime["trailer"]["embed_url"]?>"> </iframe>
+        </div>
+
+        <div class="row">
+            <div class="col mt-5 mb-3">
+                <h1>---LISTA DE GENERO---</h1>
+                <ul>
+                    <?php
+                        foreach ($anime["genres"] as $genero) { ?>
+                            <li> Nombre : <?php echo $genero["name"] ?></li>
+                    <?php } ?>
+                </ul>
+            </div>
+            <div class="col mt-5 mb-3">
+                <h1>---LISTA DE PRODUCTORAS---</h1>
+                <ul>
+                    <?php
+                        foreach ($anime["producers"] as $genero) { ?>
+                            <li> Nombre : <?php echo $genero["name"] ?></li>
+                    <?php } ?>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col mt-5 mb-3">
+            <h1>---LISTA DE ANIMES---</h1>
+            <ul>
+                <?php
+                    foreach ($anime["relations"] as $anime) { 
+                        foreach ($anime["entry"] as $seriesita){
+                            if($seriesita["type"] == "anime"){?>
+                                <ul>
+                                    <li><?php echo $seriesita["name"]?></li>
+                                </ul>
+                        <?php } ?>
+                <?php
+                        } 
+                    }?>
+            </ul>
         </div>
         
     </div>
