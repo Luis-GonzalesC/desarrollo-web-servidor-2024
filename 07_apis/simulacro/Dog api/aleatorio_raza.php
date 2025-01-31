@@ -17,7 +17,6 @@
             if(isset($_GET["raza"])){
                 $raza = $_GET["raza"];
                 $url = "https://dog.ceo/api/breed/$raza/images/random";//Link de la conexion
-
             }else{
                 $url = "https://dog.ceo/api/breeds/image/random";//Link de la conexion
             }
@@ -29,6 +28,7 @@
             curl_close($curl);//Cerramos el curl
             $datos = json_decode($respuesta, true);
             $imagen_perro = $datos["message"];
+            print_r($imagen_perro);
         }
 
         $url = "https://dog.ceo/api/breeds/list/all";//Link de la conexion
@@ -41,8 +41,6 @@
 
         $datos = json_decode($respuesta, true);
         $perros = $datos["message"];
-
-        
     ?>
 
     <div class="container">
@@ -50,11 +48,11 @@
             <h1>Seleccione una raza de Perro a mostrar</h1>
             <select name="raza">
                 <?php 
-                    foreach ($perros as $perrito => $subraza) {//Saco de cada perro u valor y su clave
+                    foreach ($perros as $perrito => $subraza) {//Saco de cada perro su valor y su clave
                         if(count($subraza) > 0){ //Si el cajon del array (valor) no está vacio quiero concatenarlo
                             foreach ($subraza as $raza) {
                                 $concatenado_raza = $raza . " " . $perrito; //Me muestra tanto el valor como la clave concatenada ?> 
-                                <option value="<?php echo $concatenado_raza ?> ">
+                                <option value="<?php echo $perrito . "/" . $raza ?> ">
                                     <?php echo ucwords($concatenado_raza); //Muestro la clave concatenada ?>
                                 </option> 
                             <?php 
