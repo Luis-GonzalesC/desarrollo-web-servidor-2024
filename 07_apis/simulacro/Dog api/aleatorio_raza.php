@@ -13,24 +13,7 @@
 </head>
 <body>
     <?php
-        if($_SERVER["REQUEST_METHOD"] == "GET"){
-            if(isset($_GET["raza"])){
-                $raza = $_GET["raza"];
-                $url = "https://dog.ceo/api/breed/$raza/images/random";//Link de la conexion
-            }else{
-                $url = "https://dog.ceo/api/breeds/image/random";//Link de la conexion
-            }
-
-            $curl = curl_init();//Iniciar la conexion
-            curl_setopt($curl, CURLOPT_URL, $url); //Accedemos a la url
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);//Cuando acceda, que me de ese fichero
-            $respuesta = curl_exec($curl);//Ejecutamos
-            curl_close($curl);//Cerramos el curl
-            $datos = json_decode($respuesta, true);
-            $imagen_perro = $datos["message"];
-            print_r($imagen_perro);
-        }
-
+        //==========================PARA MOSTRAR EN EL SELECT LOS PERRITOS=============================//
         $url = "https://dog.ceo/api/breeds/list/all";//Link de la conexion
 
         $curl = curl_init();//Iniciar la conexion
@@ -41,6 +24,22 @@
 
         $datos = json_decode($respuesta, true);
         $perros = $datos["message"];
+        
+        if(isset($_GET["raza"])){
+            $raza = $_GET["raza"];
+            $url2 = "https://dog.ceo/api/breed/$raza/images/random";//Link de la conexion
+        }else{
+            $url2 = "https://dog.ceo/api/breeds/image/random";//Link de la conexion
+        }
+
+        $curl = curl_init();//Iniciar la conexion
+        curl_setopt($curl, CURLOPT_URL, $url2); //Accedemos a la url
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);//Cuando acceda, que me de ese fichero
+        $resultado = curl_exec($curl);//Ejecutamos
+        curl_close($curl);//Cerramos el curl
+
+        $data = json_decode($resultado, true);
+        $imagen_perro = $data["message"];
     ?>
 
     <div class="container">
@@ -49,24 +48,24 @@
             <select name="raza">
                 <?php 
                     foreach ($perros as $perrito => $subraza) {//Saco de cada perro su valor y su clave
-                        if(count($subraza) > 0){ //Si el cajon del array (valor) no está vacio quiero concatenarlo
+                        if(!empty($subraza)){ //Si el cajon del array (valor) no está vacio quiero concatenarlo
                             foreach ($subraza as $raza) {
-                                $concatenado_raza = $raza . " " . $perrito; //Me muestra tanto el valor como la clave concatenada ?> 
-                                <option value="<?php echo $perrito . "/" . $raza ?> ">
-                                    <?php echo ucwords($concatenado_raza); //Muestro la clave concatenada ?>
+                                $concatenado_raza = ucwords($raza . " " . $perrito)?><!--Me muestra tanto el valor como la clave concatenada --> 
+                                <option value="<?php echo "$perrito" . "/" . "$raza"?>">
+                                    <?php echo $concatenado_raza?><!--Muestro la clave concatenada-->
                                 </option> 
                             <?php 
                             }
                         }else { ?>
-                            <option value="<?php echo $perrito //Muestro la clave concatenada ?>">
-                                <?php echo ucwords($perrito);//Muestro solo la clave si está vacío ?>
+                            <option value="<?php echo $perrito?>"><!--Muestro la clave concatenada-->
+                                <?php echo ucwords($perrito)?><!--Muestro solo la clave si está vacío-->
                             </option>
                 <?php   }
                     }
                 ?>
             </select>
             <br><br>
-            <img src="<?php echo $imagen_perro?>" alt="Foto Perro" width="500px"> <br><br>
+            <img src="<?php echo $imagen_perro ?>" alt="Foto Perro" width="500px"> <br><br>
             <input class="btn btn-primary" type="submit" value ="Aleatorio">
         </form>
     </div>
