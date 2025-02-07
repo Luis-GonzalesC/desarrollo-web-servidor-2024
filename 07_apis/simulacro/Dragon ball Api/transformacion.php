@@ -31,6 +31,7 @@
         if(!isset($_GET["id_perso"])){
             header("location: index.php");
         }
+        $pagina = $_GET["page"];
         $id_perso = $_GET["id_perso"];
 
         $url = "https://dragonball-api.com/api/characters/$id_perso";//Link de la conexion
@@ -47,7 +48,7 @@
 
     <div class="container">
         <img class="offset-4 mt-5" src="https://fontmeme.com/permalink/250202/8da68975794bc7e6c673a75f48dfae0b.png" alt="fuente-de-dragon-ball-z" border="0"> <br>
-        <a class ="btn btn-danger mt-5" href="index.php">Regresar</a>
+        <a class ="btn btn-danger mt-5" href="index.php?page=<?php echo $pagina ?>&limit=10">Regresar</a>
 
         <div class="row">
             <div class="col mt-5">

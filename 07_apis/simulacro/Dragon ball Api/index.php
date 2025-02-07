@@ -27,8 +27,15 @@
 </head>
 <body>
     <?php
+        $ultimo = false;
+        if(!isset($_GET["page"])) $pagina = 1;
+        else $pagina = $_GET["page"];
 
-        $url = "https://dragonball-api.com/api/characters";//Link de la conexion
+        if(!isset($_GET["limit"])) $limite = 10;
+        else $limite = $_GET["limit"];
+    
+
+        $url = "https://dragonball-api.com/api/characters?page=$pagina&limit=$limite";//Link de la conexion
 
         $curl = curl_init();//Iniciar la conexion
         curl_setopt($curl, CURLOPT_URL, $url); //Accedemos a la url
@@ -87,7 +94,9 @@
             </thead>
             <tbody>
                 <?php
-                    foreach($personajes as $personaje){?>
+                    foreach($personajes as $personaje){
+                            if($personaje["id"] == 78) $ultimo = true;
+                        ?>
                         <tr>
                             <td><?php echo $personaje["id"]?></td>
                             <td><?php echo $personaje["name"]?></td>
@@ -96,7 +105,7 @@
                             <td><?php echo $personaje["description"]?></td>
                             <td><img class="img" src="<?php echo $personaje["image"]?>" alt="<?php echo $personaje["name"]?>"></td>
                             <td>
-                                <a class ="btn btn-danger" href="transformacion.php?id_perso=<?php echo $personaje["id"]?>">Transformación</a>
+                                <a class ="btn btn-danger" href="transformacion.php?id_perso=<?php echo $personaje["id"]?>&page=<?php echo $pagina ?>&limit=10"">Transformación</a>
                             </td>
                         </tr>
                 <?php 
@@ -104,6 +113,32 @@
                 ?>
             </tbody>
         </table>
+
+        <?php 
+            $siguiente = $pagina + 1;
+            $atras = $pagina - 1;
+        ?>
+
+        <?php 
+            if($ultimo){?>
+                <div class="col-2 offset-7">
+                    <a class="btn btn-info" href="index.php?page=<?php echo $atras ?>&limit=10">PA ATRAS</a>
+                </div>
+        <?php } else if($atras != 0){ ?>
+                <div class="row mt-4 mb-3">
+                    <div class="col-3 offset-4">
+                        <a class="btn btn-info" href="index.php?page=<?php echo $atras ?>&limit=10">PA ATRAS</a>
+                    </div>
+                    <div class="col-3">
+                        <a class="btn btn-info" href="index.php?page=<?php echo $siguiente ?>&limit=10">PA LANTE</a>
+                    </div>
+                </div>
+        <?php } else {?>
+            <div class="col-2 offset-7">
+                    <a class="btn btn-info" href="index.php?page=<?php echo $siguiente ?>&limit=10">PA LANTE</a>
+                </div>
+        <?php }?>
+        
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
