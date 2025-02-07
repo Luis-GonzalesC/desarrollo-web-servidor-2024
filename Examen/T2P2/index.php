@@ -67,7 +67,7 @@
             <tbody>
                 <?php
                     foreach($personajes as $personaje){ 
-                            if($personaje["id"] == 78) $ultimo = true;
+                            if($personaje["id"] >= 78) $ultimo = true;
                         ?>
                         <tr>
                             <td>
@@ -91,7 +91,7 @@
         <?php if($ultimo){?>
                 <div class="col-2 offset-7">
                     <a class="btn btn-danger"href="index.php?&page=1&limit=<?php echo $limite?>">Inicio</a>
-                    <a class="btn btn-info" href="index.php?page=<?php echo $atras ?>&limit=10">PA ATRAS</a>
+                    <a class="btn btn-info" href="index.php?page=<?php echo $atras ?>&limit=<?php echo $limite?>">Anterior</a>
                 </div>
         <?php }else if($atras != 0){ ?>
                 <div class="row mt-4 mb-3">
@@ -103,17 +103,15 @@
                     </div>
                     <div class="col-3">
                         <?php if($pagina >= 0 && $pagina <= 11){ ?>
-                            <a class="btn btn-danger" href="index.php?&page=12&limit=<?php echo $limite?>">Final</a>
                             <a class="btn btn-info" href="index.php?page=<?php echo $siguiente ?>&limit=<?php echo $limite?>">Siguiente</a>
+                            <a class="btn btn-danger" href="index.php?&page=12&limit=<?php echo $limite?>">Final</a>
                         <?php } ?>
                     </div>
                 </div>
         <?php } else {?>
             <div class="col-2 offset-7">
-                <?php if($pagina >= 0 && $pagina <= 11){ ?>
-                    <a class="btn btn-danger" href="index.php?&page=12&limit=<?php echo $limite?>">Final</a>
-                <?php } ?>
                     <a class="btn btn-info" href="index.php?page=<?php echo $siguiente ?>&limit=<?php echo $limite?>">Siguiente</a>
+                    <a class="btn btn-danger" href="index.php?&page=12&limit=<?php echo $limite?>">Final</a>
                 </div>
         <?php }?>
     </div>
