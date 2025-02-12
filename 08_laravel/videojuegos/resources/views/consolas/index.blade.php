@@ -7,6 +7,10 @@
 </head>
 <body>
     <h1>Lista de consolas</h1>
-    
+    <ul>
+        @foreach($consolas as $consola)
+            <li>{{$consola}}</li>
+        @endforeach
+    </ul>
 </body>
 </html>

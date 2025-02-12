@@ -7,12 +7,12 @@ use Illuminate\Http\Request;
 class ConsoleController extends Controller
 {
     public function index(){
-        $console = [
+        $consolas = [
             "PS4",
             "PS5",
             "Nintendo Switch"
         ];
 
-        return view('consolas');
+        return view('consolas/index', ["consolas" => $consolas]);
     }
 }
