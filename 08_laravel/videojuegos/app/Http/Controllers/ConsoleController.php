@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Consola;
 
 class ConsoleController extends Controller
 {
@@ -11,11 +12,13 @@ class ConsoleController extends Controller
      */
     public function index()
     {
-        $consolas = [
+        /*$consolas = [
             "PS4",
             "PS5",
             "Nintendo Switch"
-        ];
+        ];*/
+
+        $consolas = Consola::all();//Es como un select que hace toda la lógica como un fetch en php
 
         return view('consolas/index', ["consolas" => $consolas]);
     }

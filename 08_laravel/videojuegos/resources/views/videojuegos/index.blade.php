@@ -22,9 +22,9 @@
                 list($titulo, $pegi, $genero) = $videojuego //lista para poder sacar en codigo php
             @endphp
                 <tr>
-                    <td>{{$videojuego[0]}}</td>
-                    <td>{{$videojuego[1]}}</td>
-                    <td>{{$videojuego[2]}}</td>
+                    <td>{{$videojuego[0] -> titulo}}</td>
+                    <td>{{$videojuego[1] -> titulo}}</td>
+                    <td>{{$videojuego[2] -> titulo}}</td>
                 </tr>
             @endforeach
         </tbody>
