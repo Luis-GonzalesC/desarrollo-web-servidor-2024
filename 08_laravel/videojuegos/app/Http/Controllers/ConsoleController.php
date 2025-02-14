@@ -28,7 +28,8 @@ class ConsoleController extends Controller
      */
     public function create()
     {
-        //
+        //Funcion para crear las consolas, la ruta está en las view
+        return view('consolas/create');
     }
 
     /**
@@ -36,7 +37,14 @@ class ConsoleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $consola = new Consola;
+        $consola -> nombre = $request -> input("nombre");
+        //Lo de arriba de request es igual que $_POST["nombre"];
+        $consola -> ano_lanzamiento = $request -> input("ano_lanzamiento");
+        //Lo de arriba de request es igual que $_POST["ano_lanzamiento"];
+        
+        $consola -> save(); //Esto para hacer como el insert;
+        return redirect('/consolas');
     }
 
     /**
@@ -44,7 +52,10 @@ class ConsoleController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $consola = Consola::find($id);//Busca por ID y te devuelve 1 con todas las propiedades
+        //Es como si fuera un SELECT * FROM TABLA WHERE ID= id;
+
+        return view('consolas/show', ["consola" => $consola]);
     }
 
     /**
