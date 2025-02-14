@@ -23,8 +23,8 @@
             @endphp
                 <tr>
                     <td>{{$videojuego -> Titulo}}</td>
-                    <td>{{$videojuego -> Titulo}}</td>
-                    <td>{{$videojuego -> Titulo}}</td>
+                    <td>{{$videojuego -> PEGI}}</td>
+                    <td>{{$videojuego -> Genero}}</td>
                 </tr>
             @endforeach
         </tbody>

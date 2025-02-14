@@ -27,7 +27,7 @@ class VideogameController extends Controller
      */
     public function create()
     {
-        //
+        return view('videojuegos/create');
     }
 
     /**
@@ -35,7 +35,14 @@ class VideogameController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $videojuego = new Videojuego;
+        $videojuego -> titulo = $request -> input("titulo");
+        $videojuego -> pegi = $request -> input("pegi");
+        $videojuego -> genero = $request -> input("genero");
+
+        $videojuego -> save(); //Esto para hacer como el insert;
+        return redirect('/videojuegos');
+
     }
 
     /**
@@ -43,7 +50,10 @@ class VideogameController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $videojuego = Videojuego::find($id);//Busca por ID y te devuelve 1 con todas las propiedades
+        //Es como si fuera un SELECT * FROM TABLA WHERE ID= id;
+
+        return view('videojuegos/show', ["videojuego" => $videojuego]);
     }
 
     /**
