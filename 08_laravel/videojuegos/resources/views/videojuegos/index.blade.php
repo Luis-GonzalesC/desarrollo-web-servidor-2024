@@ -17,11 +17,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                @foreach($videojuegos as $videojuego)
-                    <td>{{$videojuego}}</td>   
-                @endforeach
-            </tr>
+            @foreach($videojuegos as $videojuego)
+            @php
+                list($titulo, $pegi, $genero) = $videojuego //lista para poder sacar en codigo php
+            @endphp
+                <tr>
+                    <td>{{$videojuego[0]}}</td>
+                    <td>{{$videojuego[1]}}</td>
+                    <td>{{$videojuego[2]}}</td>
+                </tr>
+            @endforeach
         </tbody>
     </table>
 </body>

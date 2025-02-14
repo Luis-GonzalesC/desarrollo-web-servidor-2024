@@ -14,7 +14,9 @@ use App\Http\Controllers\VideogameController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::get('/videojuegos', [VideogameController::class, 'index']);
+Route::resource('/videojuegos', VideogameController::class);
+
+/* Route::get('/videojuegos', [VideogameController::class, 'index']); */
 
 Route::get('/consolas', [ConsoleController::class, 'index']);
 

@@ -12,9 +12,9 @@ class VideogameController extends Controller
     public function index()
     {
         $videojuegos = [
-            "Titulo" => "Spiderman",
-            "Pegi" => "18",
-            "Genero" => "Acción"
+            ["Hollow Knight", "PEGI 18", "Aventuras"],
+            ["Elden Ring", "PEGI 18", "Souls"],
+            ["The Legend of Zelda", "PEGI 7", "Aventuras"]
         ];
 
         return view('videojuegos/index',  ["videojuegos" => $videojuegos]);
