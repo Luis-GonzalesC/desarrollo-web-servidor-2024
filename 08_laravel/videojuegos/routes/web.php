@@ -14,11 +14,12 @@ use App\Http\Controllers\VideogameController;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-Route::resource('/videojuegos', VideogameController::class);
 
 /* Route::get('/videojuegos', [VideogameController::class, 'index']); */
+Route::resource('/videojuegos', VideogameController::class);
 
-Route::get('/consolas', [ConsoleController::class, 'index']);
+/* Route::get('/consolas', [ConsoleController::class, 'index']); */
+Route::resource('/consolas', ConsoleController::class);
 
 Route::get('/', function () {
     return view('welcome');
